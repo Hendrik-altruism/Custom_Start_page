@@ -1,10 +1,9 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+import IconBar from '../components/IconBar.vue'
 </script>
 
 <template>
   <main>
-    <TheWelcome />
-    <p>RTest</p>
+    <IconBar />
   </main>
 </template>

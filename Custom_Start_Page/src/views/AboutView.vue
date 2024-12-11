@@ -1,6 +1,10 @@
+<script setup>
+import YouTube from '../components/YouTube.vue'
+</script>
+
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <YouTube />
   </div>
 </template>
 
