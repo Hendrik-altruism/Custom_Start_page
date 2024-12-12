@@ -1,0 +1,147 @@
+<script setup>
+import YouTubeIcon from './icons/IconYouTube.vue'
+import TelekomIcon from './icons/IconTelekom.vue'
+import ConetIcon from './icons/IconConet.vue'
+import TwitchIcon from './icons/IconTwitch.vue'
+import WhatsAppIcon from './icons/IconWhatsApp.vue'
+import GitHubIcon from './icons/IconGitHub.vue'
+import WohnungenIcon from './icons/IconWohnungen.vue'
+import JobIcon from './icons/IconJob.vue'
+import GPTIcon from './icons/IconGPT.vue'
+import CalendarIcon from './icons/IconCalendar.vue'
+import InstagramIcon from './icons/IconInstagram.vue'
+import HbrsIcon from './icons/IconHbrs.vue'
+import MailIcon from './icons/IconMail.vue'
+import NetflixIcon from './icons/IconNetflix.vue'
+import AmazonIcon from './icons/IconAmazon.vue'
+import PrimeVideoIcon from './icons/IconPrimeVideo.vue'
+import SparkasseIcon from './icons/IconSparkasse.vue'
+import TradeRepublicIcon from './icons/IconTradeRepublic.vue'
+import INGIcon from './icons/IconING.vue'
+import BeerwatchIcon from './icons/IconBeerwatch.vue'
+
+import SearchItem from './SearchItem.vue'
+</script>
+
+<template>
+  <div class="desktop-container">
+    <div class="iconelement">
+      <YouTubeIcon />
+    </div>
+
+    <div class="iconelement">
+      <WhatsAppIcon />
+    </div>
+
+    <div class="iconelement">
+      <InstagramIcon />
+    </div>
+
+    <div class="iconelement">
+      <GPTIcon />
+    </div>
+
+    <div class="iconelement">
+      <CalendarIcon />
+    </div>
+
+    <div class="iconelement">
+      <TwitchIcon />
+    </div>
+
+    <div id="searchbar" class="iconelement">
+      <SearchItem/>
+    </div>
+
+    <div class="iconelement">
+      <JobIcon />
+    </div>
+
+    <div class="iconelement">
+      <NetflixIcon />
+    </div>
+
+    <div class="iconelement">
+      <GitHubIcon />
+    </div>
+
+    <div class="iconelement">
+      <ConetIcon />
+    </div>
+
+    <div class="iconelement">
+      <TelekomIcon />
+    </div>
+
+    <div class="iconelement">
+      <WohnungenIcon />
+    </div>
+
+    <div class="iconelement">
+      <PrimeVideoIcon />
+    </div>
+
+    <div class="iconelement">
+      <BeerwatchIcon />
+    </div>
+
+    <div class="iconelement">
+      <HbrsIcon />
+    </div>
+
+    <div class="iconelement">
+      <AmazonIcon />
+    </div>
+
+    <div class="iconelement">
+      <MailIcon />
+    </div>
+
+    <div class="iconelement">
+      <TradeRepublicIcon />
+    </div>
+
+    <div class="iconelement">
+      <SparkasseIcon />
+    </div>
+
+    <div class="iconelement">
+      <INGIcon />
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.desktop-container{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.iconelement{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 13em;
+  color: var(--color-text);
+}
+
+.iconelement svg{
+  scale: 1;
+  transition-property: scale;
+  transition-duration: .5s;
+}
+
+.iconelement svg:hover{
+  cursor: pointer;
+  scale: 1.15;
+}
+
+.iconelement svg:active{
+  cursor: pointer;
+  scale: 1;
+}
+
+#searchbar{
+  grid-column: span 3;
+}
+</style>

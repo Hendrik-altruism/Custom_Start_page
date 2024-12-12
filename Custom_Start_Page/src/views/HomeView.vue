@@ -1,5 +1,5 @@
 <script setup>
-import IconBar from '../components/IconBar.vue'
+import IconBar from '../components/Desktop.vue'
 </script>
 
 <template>
@@ -7,3 +7,6 @@ import IconBar from '../components/IconBar.vue'
     <IconBar />
   </main>
 </template>
+
+<style scoped>
+</style>
