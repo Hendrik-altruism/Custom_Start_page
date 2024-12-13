@@ -5,7 +5,8 @@
     viewBox="0 0 79.375 32.733089"
     fill="currentColor"
     >
-    <g
+    <g  
+        fill="#2a3f8b"
         transform="translate(-83.358052,-156.29313)"
         id="layer1">
         <path

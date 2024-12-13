@@ -19,6 +19,9 @@ import SparkasseIcon from './icons/IconSparkasse.vue'
 import TradeRepublicIcon from './icons/IconTradeRepublic.vue'
 import INGIcon from './icons/IconING.vue'
 import BeerwatchIcon from './icons/IconBeerwatch.vue'
+import GoogleIcon from './icons/IconGoogle.vue'
+import ScholarIcon from './icons/IconScholar.vue'
+import SpringerIcon from './icons/IconSpringer.vue'
 
 import SearchItem from './SearchItem.vue'
 </script>
@@ -49,8 +52,20 @@ import SearchItem from './SearchItem.vue'
       <TwitchIcon />
     </div>
 
-    <div id="searchbar" class="iconelement">
+    <!-- <div id="searchbar" class="iconelement">
       <SearchItem/>
+    </div> -->
+
+    <div class="iconelement">
+      <SpringerIcon/>
+    </div>
+
+    <div class="iconelement">
+      <GoogleIcon/>
+    </div>
+
+    <div class="iconelement">
+      <ScholarIcon/>
     </div>
 
     <div class="iconelement">
@@ -126,22 +141,28 @@ import SearchItem from './SearchItem.vue'
 }
 
 .iconelement svg{
+  filter: invert(71%) sepia(3%) saturate(10%) hue-rotate(7deg) brightness(88%) contrast(95%);
   scale: 1;
   transition-property: scale;
   transition-duration: .5s;
 }
 
-.iconelement svg:hover{
-  cursor: pointer;
-  scale: 1.15;
+#searchbar{
+  grid-column: span 3;
+}
+
+@media (hover: hover) {
+  .iconelement svg:hover{
+    /* Change */
+    /* filter: invert(47%) sepia(65%) saturate(302%) hue-rotate(127deg) brightness(97%) contrast(95%); */
+    filter: none;
+    cursor: pointer;
+    scale: 1.15;
+  }
 }
 
 .iconelement svg:active{
   cursor: pointer;
   scale: 1;
-}
-
-#searchbar{
-  grid-column: span 3;
 }
 </style>
