@@ -52,21 +52,29 @@ import SearchItem from './SearchItem.vue'
       <TwitchIcon />
     </div>
 
-    <!-- <div id="searchbar" class="iconelement">
-      <SearchItem/>
-    </div> -->
-
-    <div class="iconelement">
+    <div class="iconelement searchsvg"  @click="changeSearch('springer')">
       <SpringerIcon/>
     </div>
 
-    <div class="iconelement">
+    <div id="searchbarSpringer" class="iconelement searchbar">
+      <SearchItem searchbarType="springer"/>
+    </div> 
+
+    <div class="iconelement searchsvg"  @click="changeSearch('google')">
       <GoogleIcon/>
     </div>
 
-    <div class="iconelement">
+    <div id="searchbarGoogle" class="iconelement searchbar">
+      <SearchItem searchbarType="google"/>
+    </div> 
+
+    <div class="iconelement searchsvg"  @click="changeSearch('scholar')">
       <ScholarIcon/>
     </div>
+
+    <div id="searchbarScholar" class="iconelement searchbar">
+      <SearchItem searchbarType="scholar"/>
+    </div> 
 
     <div class="iconelement">
       <JobIcon />
@@ -147,8 +155,9 @@ import SearchItem from './SearchItem.vue'
   transition-duration: .5s;
 }
 
-#searchbar{
+.searchbar{
   grid-column: span 3;
+  display: none;
 }
 
 @media (hover: hover) {
@@ -165,4 +174,37 @@ import SearchItem from './SearchItem.vue'
   cursor: pointer;
   scale: 1;
 }
+
 </style>
+
+<script>
+
+let changeSearch = (engine) => {
+  document.querySelectorAll(".searchsvg").forEach(element => {
+    element.style.display = "none";
+  });
+  switch (engine) {
+        case "springer":
+            const searchbarSpringer = document.getElementById("searchbarSpringer");
+            searchbarSpringer.style.display = "flex";
+            searchbarSpringer.querySelector(".search-string").focus();
+            break;
+        
+        case "google":
+            const searchbarGoogle = document.getElementById("searchbarGoogle");
+            searchbarGoogle.style.display = "flex";
+            searchbarGoogle.querySelector(".search-string").focus();
+            break;
+        
+        case "scholar":
+            const searchbarScholar = document.getElementById("searchbarScholar");
+            searchbarScholar.style.display = "flex";
+            searchbarScholar.querySelector(".search-string").focus();
+            break;
+
+        default:
+            break;
+    }
+}
+
+</script>
