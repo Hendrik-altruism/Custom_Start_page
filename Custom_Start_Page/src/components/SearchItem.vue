@@ -1,21 +1,27 @@
 <script setup>
+import SearchIcon from './icons/IconSearch.vue';
+
 const props = defineProps({
   searchbarType: {
     type: String,
     required: true,
   },
-})
+});
 
-let changeSvgs = () => {
+
+let focusIn = (event) => {
   document.querySelectorAll(".searchsvg").forEach(element => {
-    element.style.display = "flex";
-  });
-  document.querySelectorAll(".searchbar").forEach(element => {
-    element.style.display = "none";
-  });
-  document.querySelectorAll(".search-string").forEach(element => {
-    element.value = "";
-  });
+        element.style.display = "none";
+      });
+}
+
+
+let focusOut = (event) => {
+  document.querySelectorAll(".searchsvg").forEach(element => {
+        element.style.display = "flex";
+      });
+  event.target.value = "";
+  event.target.parentElement.parentElement.style.display = "none";
 }
 
 let search = () => {
@@ -42,18 +48,14 @@ let search = () => {
             break;
     }
     window.open(url, '_blank');
-    query.value = "";
 }
 
 </script>
 
 <template>
     <div class="search-container">
-        <form>
-          <input value="X" class="searchbar-element" @click="changeSvgs()">
-          <input placeholder="Suche..." name="lname" class="searchbar-element search-string">
-          <input type="submit" value="Suche" class="searchbar-element" @click="search()" @keyup.enter="submit">
-        </form>
+      <input placeholder="Suche..." class="searchbar-element search-string" @focusin="(event) => focusIn(event)" @focusout="(event) => focusOut(event)" @keyup.enter="search()" @keyup.escape="focusOut">
+      <SearchIcon />
     </div>
 </template>
 
@@ -64,16 +66,28 @@ let search = () => {
 
 .search-container{
     border-radius: 30px;
-    background-color: var(--color-accent-text);
+    background-color: var(--color-accent2);
     padding: 10px;
-}
+    display: flex;
+    align-items: center;
+  }
 
 .search-string{
     border: none;
     outline: none;
-    width: 30rem;
+    width: 0;
     font-weight: 500;
     background: transparent;
+    transition: 0.8s;
+    color: var(--color-heading);
+}
+
+.search-string:focus{
+  width: 30rem;
+}
+
+::placeholder{
+  color: var(--color-text);
 }
 
 .search-submit{

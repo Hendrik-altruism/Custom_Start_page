@@ -75,6 +75,7 @@
     --color-text: var(--vt-c-text-dark-2);
     
     --color-accent-text: var(--color-conet-light);
+    --color-accent2: var(--color-conet-dark);
     --color-hover-text: var(--color-conet-hover);
   }
 

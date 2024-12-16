@@ -52,24 +52,24 @@ import SearchItem from './SearchItem.vue'
       <TwitchIcon />
     </div>
 
-    <div class="iconelement searchsvg"  @click="changeSearch('springer')">
-      <SpringerIcon/>
+    <div class="iconelement searchsvg">
+      <SpringerIcon @click="changeSearch('springer')"/>
     </div>
 
     <div id="searchbarSpringer" class="iconelement searchbar">
       <SearchItem searchbarType="springer"/>
     </div> 
 
-    <div class="iconelement searchsvg"  @click="changeSearch('google')">
-      <GoogleIcon/>
+    <div class="iconelement searchsvg">
+      <GoogleIcon @click="changeSearch('google')"/>
     </div>
 
     <div id="searchbarGoogle" class="iconelement searchbar">
       <SearchItem searchbarType="google"/>
     </div> 
 
-    <div class="iconelement searchsvg"  @click="changeSearch('scholar')">
-      <ScholarIcon/>
+    <div class="iconelement searchsvg">
+      <ScholarIcon @click="changeSearch('scholar')"/>
     </div>
 
     <div id="searchbarScholar" class="iconelement searchbar">
@@ -180,9 +180,6 @@ import SearchItem from './SearchItem.vue'
 <script>
 
 let changeSearch = (engine) => {
-  document.querySelectorAll(".searchsvg").forEach(element => {
-    element.style.display = "none";
-  });
   switch (engine) {
         case "springer":
             const searchbarSpringer = document.getElementById("searchbarSpringer");
