@@ -1,25 +1,20 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import Header from './components/Header.vue'
-import DolphinIcon from './components/icons/IconDolphin.vue'
 import DolphinMirrorIcon from './components/icons/IconDolphinMirror.vue'
 </script>
 
 <template>
   <header>
-    <DolphinMirrorIcon />
-
     <div class="wrapper">
-      <Header msg="Hendriks Startpage" />
-
-      <nav>
-        <RouterLink to="/">Desktop</RouterLink>
-        <RouterLink to="/settings">Settings</RouterLink>
-        <RouterLink to="/game">Custom Game</RouterLink>
-      </nav>
+      <DolphinMirrorIcon />    
+      <Header msg="" />
     </div>
-    
-    <DolphinIcon />
+    <nav>
+      <RouterLink to="/">Desktop</RouterLink>
+      <RouterLink to="/settings">Settings</RouterLink>
+      <RouterLink to="/game">Custom Game</RouterLink>
+    </nav>
   </header>
 
   <RouterView />
@@ -30,18 +25,19 @@ header {
     display: flex;
     place-items: center;
     justify-content: space-between;
+    background-color: var(--color-header-bg);
+    padding: 30px;
   }
 
   .logo {
     margin: 0 2rem 0 0;
   }
 
-  header .wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
+header .wrapper{
+  display: flex;
+  align-items: center;
+  gap: 3em;
+}
 
 nav a.router-link-exact-active {
   color: var(--color-text);

@@ -28,7 +28,9 @@
 
   --color-conet-light: rgb(66, 149, 144);
   --color-conet-dark: rgb(48, 122, 117);
+  --color-conet-darker: hsla(176, 35%, 20%, 0.2);
   --color-conet-hover: hsla(176, 38.6%, 42%, 0.2);
+  --color-conet-header: hsla(178, 35%, 19%, 0.2);
 }
 
 /* semantic color variables for this project */
@@ -77,6 +79,7 @@
     --color-accent-text: var(--color-conet-light);
     --color-accent2: var(--color-conet-dark);
     --color-hover-text: var(--color-conet-hover);
+    --color-header-bg: var(--color-conet-header);
   }
 
   /* Telekom */
