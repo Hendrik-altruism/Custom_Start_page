@@ -1,4 +1,6 @@
 <script setup>
+import { ref } from 'vue';
+
 import SearchIcon from './icons/IconSearch.vue';
 import { saveSearch, loadSearches } from './../assets/indexedDB.js';
 
@@ -9,41 +11,47 @@ const props = defineProps({
   },
 });
 
+let searchHistoryItems = ref([]);
+let textInput = ref(null);
 
-let focusIn = async (event) => {
+let focusIn = () => {
   document.querySelectorAll(".searchsvg").forEach(element => {
     element.style.display = "none";
   });
-  const searches = await loadSearches(props.searchbarType);
-  addSearchHistory(searches, event.target);
+  updateSearches();
 }
-
 
 let focusOut = (event) => {
   document.querySelectorAll(".searchsvg").forEach(element => {
         element.style.display = "flex";
       });
-  event.target.value = "";
+  textInput.value.value = "";
   event.target.parentElement.parentElement.parentElement.style.display = "none";
 }
 
-let search = (event) => {
+let updateSearches = async () => {
+  const searches = await loadSearches(props.searchbarType);
+  const results = searches.filter((element) => element.query.toLowerCase().includes(textInput.value.value.toLowerCase()));
+  addSearchHistory(results)
+}
+
+let search = () => {
     let url = "";
-    let query = event.target.value;
+    let query = textInput.value.value;
     switch (props.searchbarType) {
         case "springer":
             url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-            saveSearch(event, "springer");
+            saveSearch(textInput.value.value, "springer");
             break;
         
         case "google":
             url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-            saveSearch(event, "google");
+            saveSearch(textInput.value.value, "google");
             break;
         
         case "scholar":
             url = `https://scholar.google.de/scholar?hl=de&as_sdt=0%2C5&q=${encodeURIComponent(query)}&btnG=`;
-            saveSearch(event, "scholar");
+            saveSearch(textInput.value.value, "scholar");
             break;
 
         default:
@@ -52,63 +60,67 @@ let search = (event) => {
     window.open(url, '_blank');
 }
 
-let addSearchHistory = (searches, element) => {
-  const value = element.value;
-  const searchContainer = element.parentElement.nextElementSibling;
-  searchContainer.innerHTML = "";
-  let htmlString = ``;
+let addSearchHistory = (searches) => {
+  searchHistoryItems.value = [];
   for (let i = (searches.length-1); i >= 0 && i > (searches.length-6); i--){
-    console.log(i)
-    htmlString += `
-      <div class="search-element">
-      ${searches[i]["query"]} 
-      </div>
-    `
+    searchHistoryItems.value.push(searches[i]["query"])
   }
-  console.log(searchContainer.innerHtml)
-  console.log(htmlString)
-  searchContainer.innerHTML = htmlString;
-  console.log(searchContainer)
 };
 </script>
 
 <template>
     <div class="search-container">
       <div class="input-container">
-        <input placeholder="Suche..." class="searchbar-element search-string" @focusin="(event) => focusIn(event)" @focusout="(event) => focusOut(event)" @keyup.enter="(event) => search(event)" @keyup.escape="focusOut">
+        <input ref="textInput" placeholder="Suche..." class="searchbar-element search-string" @focusin="focusIn()" @focusout="(event) => focusOut(event)" @keyup.enter="(event) => search(event)" @keyup.escape="focusOut" @input="updateSearches()">
         <SearchIcon />
       </div>
       <div class="searches">
-
+        <div v-for="(item, index) in searchHistoryItems" :key="index" class="search-element">
+          {{ item }}
+        </div>
       </div>
     </div>
 </template>
 
 <style scoped>
+
 .searchbar-element{
     font-size: large;
 }
 
 .search-container{
-    border-radius: 30px;
+    border-radius: 20px;
     background-color: var(--color-accent2);
-    padding: 10px;
     display: flex;
     flex-direction: column;
+    position: relative;
   }
 
 .input-container{
   display: flex;
   align-items: center;
+  padding: 20px;
+  height: var(--searchbar-height);
+  z-index: 200;
 }
 
-.searches > div{
+.searches{
+  background-color: var(--color-accent2);
+  border-radius: calc(.5 * var(--searchbar-height));
+  padding-top: var(--searchbar-height);
+  position: absolute; 
+  z-index: 100;
+  width: 100%;
+}
+
+.search-element{
   border-radius: 30px;
-  background-color: var(--color-accent-text);
+  padding: 10px 30px;
 }
 
 .search-element:hover{
   background-color: var(--color-accent-text);
+  cursor: pointer;
 }
 
 .search-string{

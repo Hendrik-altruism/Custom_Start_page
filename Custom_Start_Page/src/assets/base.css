@@ -31,6 +31,10 @@
   --color-conet-darker: hsla(176, 35%, 20%, 0.2);
   --color-conet-hover: hsla(176, 38.6%, 42%, 0.2);
   --color-conet-header: hsla(178, 35%, 19%, 0.2);
+
+
+
+  --searchbar-height: 50px;
 }
 
 /* semantic color variables for this project */

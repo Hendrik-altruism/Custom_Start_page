@@ -1,6 +1,7 @@
 let db; // Globale Variable für die Datenbank
 const dbName = "SearchDB";
 const storeNames = ["springer", "google", "scholar"];
+const storeLimit = 2000;
 
 
 
@@ -20,7 +21,6 @@ export function openDB() {
 
     request.onsuccess = function (event) {
         db = event.target.result;
-        console.log("IndexedDB erfolgreich geöffnet");
     };
 
     request.onerror = function (event) {
@@ -28,9 +28,81 @@ export function openDB() {
     };
 }
 
+function checkCount(storeName){
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction([storeName], "readwrite");
+        const store = transaction.objectStore(storeName);
+
+        const countRequest = store.count();
+
+        countRequest.onsuccess = function () {
+            const count = countRequest.result;
+
+            if (count >= storeLimit) {
+                const getAllKeysRequest = store.getAllKeys();
+
+                getAllKeysRequest.onsuccess = () => {
+                  const keys = getAllKeysRequest.result;
+      
+                  if (keys.length > 0) {
+                    store.delete(keys[0]).onsuccess = () => {
+                      console.log(`Eintrag mit Schlüssel ${keys[0]} gelöscht.`);
+                    };
+                  }
+                }
+            } else {
+                resolve;
+            }
+        };
+        countRequest.onerror = reject;
+    });
+}
+
+async function deleteByQuery(query, storeName) {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open(dbName);
+  
+      request.onsuccess = (event) => {
+        const db = event.target.result;
+        const transaction = db.transaction(storeName, 'readwrite');
+        const store = transaction.objectStore(storeName);
+  
+        // Erstelle einen Cursor, um nach `query` zu suchen
+        const cursorRequest = store.openCursor();
+        let deletedCount = 0;
+  
+        cursorRequest.onsuccess = (event) => {
+          const cursor = event.target.result;
+  
+          if (cursor) {
+            if (cursor.value.query.toLowerCase() === query.toLowerCase()) {
+              // Passenden Eintrag löschen
+              cursor.delete();
+              deletedCount++;
+            }
+            cursor.continue();
+          } else {
+            // Kein weiterer Eintrag, löschvorgang abgeschlossen
+            resolve(deletedCount);
+          }
+        };
+  
+        cursorRequest.onerror = (event) => {
+          console.error('Fehler beim Durchsuchen mit Cursor:', event.target.error);
+          reject(event.target.error);
+        };
+      };
+  
+      request.onerror = (event) => {
+        console.error('Datenbank-Fehler:', event.target.error);
+        reject(event.target.error);
+      };
+    });
+  }
+
 // 2. Suchanfrage speichern
-export function saveSearch(event, storeName) {
-    const searchInput = event.target.value;
+export async function saveSearch(searchInput, storeName) {
+    await deleteByQuery(searchInput, storeName)
 
     const transaction = db.transaction([storeName], "readwrite");
     const store = transaction.objectStore(storeName);
@@ -41,6 +113,8 @@ export function saveSearch(event, storeName) {
     };
 
     const request = store.add(searchEntry);
+
+    checkCount(storeName);
 
     request.onsuccess = function () {
         console.log("Suchanfrage erfolgreich gespeichert:", searchEntry);
