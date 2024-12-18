@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 
 import SearchIcon from './icons/IconSearch.vue';
+import HistoryIcon from './icons/IconHistory.vue';
 import { saveSearch, loadSearches } from './../assets/indexedDB.js';
 
 const props = defineProps({
@@ -13,6 +14,7 @@ const props = defineProps({
 
 let searchHistoryItems = ref([]);
 let textInput = ref(null);
+let keyPos = ref(-1);
 
 let focusIn = () => {
   document.querySelectorAll(".searchsvg").forEach(element => {
@@ -26,10 +28,12 @@ let focusOut = (event) => {
         element.style.display = "flex";
       });
   textInput.value.value = "";
+  keyPos.value = -1;
   event.target.parentElement.parentElement.parentElement.style.display = "none";
 }
 
 let updateSearches = async () => {
+  keyPos.value = -1;
   const searches = await loadSearches(props.searchbarType);
   const results = searches.filter((element) => element.query.toLowerCase().includes(textInput.value.value.toLowerCase()));
   addSearchHistory(results)
@@ -66,17 +70,38 @@ let addSearchHistory = (searches) => {
     searchHistoryItems.value.push(searches[i]["query"])
   }
 };
+
+let changeSelect = (value) => {
+  console.log(searchHistoryItems.value.length)
+  if(keyPos.value+value >= searchHistoryItems.value.length){
+    keyPos.value = 0;
+  }else if(keyPos.value+value < 0){
+    keyPos.value = searchHistoryItems.value.length-1;
+  }else{
+    keyPos.value = keyPos.value+value;
+  }
+  if(searchHistoryItems.value.length>0){
+    textInput.value.value = searchHistoryItems.value[keyPos.value]
+  }
+}
 </script>
 
 <template>
     <div class="search-container">
       <div class="input-container">
-        <input ref="textInput" placeholder="Suche..." class="searchbar-element search-string" @focusin="focusIn()" @focusout="(event) => focusOut(event)" @keyup.enter="(event) => search(event)" @keyup.escape="focusOut" @input="updateSearches()">
+        <input ref="textInput" placeholder="Suche..." class="searchbar-element search-string" @focusin="focusIn" @focusout="(event) => focusOut(event)" @keyup.enter="search" @keyup.escape="focusOut" @input="updateSearches" @keyup.up="changeSelect(-1)" @keyup.down="changeSelect(1)">
         <SearchIcon />
       </div>
       <div class="searches">
-        <div v-for="(item, index) in searchHistoryItems" :key="index" class="search-element">
-          {{ item }}
+        <div v-for="(item, index) in searchHistoryItems" :key="index">
+          <div v-if="keyPos == index" class="search-element focused-search">
+            <HistoryIcon />
+            {{ item }}
+          </div>
+          <div v-else class="search-element">
+            <HistoryIcon />
+            {{ item }}
+          </div>
         </div>
       </div>
     </div>
@@ -114,7 +139,9 @@ let addSearchHistory = (searches) => {
 }
 
 .search-element{
-  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
   padding: 10px 30px;
 }
 
@@ -135,6 +162,13 @@ let addSearchHistory = (searches) => {
 
 .search-string:focus{
   width: 35rem;
+}
+
+.focused-search{
+  background-color: var(--color-accent-text);
+  border-left: solid 3px;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
 }
 
 ::placeholder{

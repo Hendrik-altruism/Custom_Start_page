@@ -5,9 +5,9 @@ const storeLimit = 2000;
 
 
 
-// 1. IndexedDB öffnen/erstellen
+
 export function openDB() {
-    const request = indexedDB.open(dbName, 1); // Versionsnummer: 1
+    const request = indexedDB.open(dbName, 1);
 
     request.onupgradeneeded = function (event) {
         db = event.target.result;
@@ -100,7 +100,7 @@ async function deleteByQuery(query, storeName) {
     });
   }
 
-// 2. Suchanfrage speichern
+
 export async function saveSearch(searchInput, storeName) {
     await deleteByQuery(searchInput, storeName)
 
