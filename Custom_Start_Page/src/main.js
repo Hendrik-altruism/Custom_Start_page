@@ -11,4 +11,4 @@ app.use(router)
 
 app.mount('#app')
 
-window.onload = openDB;
+window.onload = await openDB();

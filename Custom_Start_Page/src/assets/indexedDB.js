@@ -6,7 +6,8 @@ const storeLimit = 2000;
 
 
 
-export function openDB() {
+export async function openDB() {
+  return new Promise((resolve, reject) => {
     const request = indexedDB.open(dbName, 1);
 
     request.onupgradeneeded = function (event) {
@@ -21,11 +22,11 @@ export function openDB() {
 
     request.onsuccess = function (event) {
         db = event.target.result;
+        resolve;
     };
 
-    request.onerror = function (event) {
-        console.error("Fehler beim Öffnen der IndexedDB", event.target.error);
-    };
+    request.onerror = reject;
+  })
 }
 
 function checkCount(storeName){
@@ -58,7 +59,7 @@ function checkCount(storeName){
     });
 }
 
-async function deleteByQuery(query, storeName) {
+export async function deleteByQuery(query, storeName) {
     return new Promise((resolve, reject) => {
       const request = indexedDB.open(dbName);
   
@@ -75,7 +76,7 @@ async function deleteByQuery(query, storeName) {
           const cursor = event.target.result;
   
           if (cursor) {
-            if (cursor.value.query.toLowerCase() === query.toLowerCase()) {
+            if (cursor.value.query.toLowerCase().trim() === query.toLowerCase().trim()) {
               // Passenden Eintrag löschen
               cursor.delete();
               deletedCount++;
@@ -108,7 +109,7 @@ export async function saveSearch(searchInput, storeName) {
     const store = transaction.objectStore(storeName);
 
     const searchEntry = {
-        query: searchInput,
+        query: searchInput.trim(),
         date: new Date().toISOString(),
     };
 

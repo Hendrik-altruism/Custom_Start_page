@@ -3,7 +3,8 @@ import { ref } from 'vue';
 
 import SearchIcon from './icons/IconSearch.vue';
 import HistoryIcon from './icons/IconHistory.vue';
-import { saveSearch, loadSearches } from './../assets/indexedDB.js';
+import CloseIcon from './icons/IconClose.vue';
+import { saveSearch, loadSearches, deleteByQuery } from './../assets/indexedDB.js';
 
 const props = defineProps({
   searchbarType: {
@@ -24,18 +25,14 @@ let focusIn = () => {
 }
 
 let focusOut = (event) => {
-  document.querySelectorAll(".searchsvg").forEach(element => {
-        element.style.display = "flex";
-      });
   textInput.value.value = "";
   keyPos.value = -1;
-  event.target.parentElement.parentElement.parentElement.style.display = "none";
 }
 
 let updateSearches = async () => {
   keyPos.value = -1;
   const searches = await loadSearches(props.searchbarType);
-  const results = searches.filter((element) => element.query.toLowerCase().includes(textInput.value.value.toLowerCase()));
+  const results = searches.filter((element) => element.query.toLowerCase().trim().includes(textInput.value.value.toLowerCase().trim()));
   addSearchHistory(results)
 }
 
@@ -45,23 +42,24 @@ let search = () => {
     switch (props.searchbarType) {
         case "springer":
             url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-            saveSearch(textInput.value.value, "springer");
+            saveSearch(query, "springer");
             break;
         
         case "google":
             url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-            saveSearch(textInput.value.value, "google");
+            saveSearch(query, "google");
             break;
         
         case "scholar":
             url = `https://scholar.google.de/scholar?hl=de&as_sdt=0%2C5&q=${encodeURIComponent(query)}&btnG=`;
-            saveSearch(textInput.value.value, "scholar");
+            saveSearch(query, "scholar");
             break;
 
         default:
             break;
     }
-    window.open(url, '_blank');
+    textInput.value.value = "";
+    window.open(url, "_self");
 }
 
 let addSearchHistory = (searches) => {
@@ -72,7 +70,6 @@ let addSearchHistory = (searches) => {
 };
 
 let changeSelect = (value) => {
-  console.log(searchHistoryItems.value.length)
   if(keyPos.value+value >= searchHistoryItems.value.length){
     keyPos.value = 0;
   }else if(keyPos.value+value < 0){
@@ -84,23 +81,40 @@ let changeSelect = (value) => {
     textInput.value.value = searchHistoryItems.value[keyPos.value]
   }
 }
+
+let deleteHistory = async (item) => {
+  await deleteByQuery(item, props.searchbarType)
+  textInput.value.focus();
+  updateSearches()
+}
+
+let changeInput = (item) => {
+  textInput.value.value = item;
+  search()
+}
 </script>
 
 <template>
     <div class="search-container">
       <div class="input-container">
-        <input ref="textInput" placeholder="Suche..." class="searchbar-element search-string" @focusin="focusIn" @focusout="(event) => focusOut(event)" @keyup.enter="search" @keyup.escape="focusOut" @input="updateSearches" @keyup.up="changeSelect(-1)" @keyup.down="changeSelect(1)">
+        <input ref="textInput" placeholder="Suche..." id="searchbar" class="searchbar-element search-string" @focusin="focusIn" @focusout="(event) => focusOut(event)" @keyup.enter="search" @keyup.escape="focusOut" @input="updateSearches" @keyup.up="changeSelect(-1)" @keyup.down="changeSelect(1)">
         <SearchIcon />
       </div>
       <div class="searches">
-        <div v-for="(item, index) in searchHistoryItems" :key="index">
+        <div v-for="(item, index) in searchHistoryItems" :key="index" class="search-item">
           <div v-if="keyPos == index" class="search-element focused-search">
-            <HistoryIcon />
-            {{ item }}
+            <div class="front-search"  @click="changeInput(item)">
+              <HistoryIcon />
+              {{ item }}
+            </div>
+            <CloseIcon class="close-icon" @click="deleteHistory(item)"/>
           </div>
           <div v-else class="search-element">
-            <HistoryIcon />
-            {{ item }}
+            <div class="front-search"  @click=" changeInput(item)">
+              <HistoryIcon />
+              {{ item }}
+            </div>
+            <CloseIcon class="close-icon" @click="deleteHistory(item)"/>
           </div>
         </div>
       </div>
@@ -141,27 +155,26 @@ let changeSelect = (value) => {
 .search-element{
   display: flex;
   align-items: center;
+}
+
+.front-search{
+  display: flex;
+  align-items: center;
   gap: 5px;
-  padding: 10px 30px;
+  flex-grow: 2;
+  padding: 10px 0px 10px 30px;
+  margin-right: 40px;
+}
+
+.search-item:last-of-type{
+  padding-bottom: 20px;
 }
 
 .search-element:hover{
   background-color: var(--color-accent-text);
   cursor: pointer;
-}
-
-.search-string{
-    border: none;
-    outline: none;
-    width: 0;
-    font-weight: 500;
-    background: transparent;
-    transition: 0.8s;
-    color: var(--color-heading);
-}
-
-.search-string:focus{
-  width: 35rem;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
 }
 
 .focused-search{
@@ -171,7 +184,43 @@ let changeSelect = (value) => {
   border-bottom-right-radius: 30px;
 }
 
+.search-string{
+    border: none;
+    outline: none;
+    width: 5rem;
+    font-weight: 500;
+    background: transparent;
+    animation-name: bar-1;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    color: var(--color-heading);
+}
+
+.close-icon{
+  display: none;
+  border-radius: 30px;
+  margin-right: 15px;
+}
+
+.search-element:hover > .close-icon{
+  display: inline;
+}
+
+.focused-search > .close-icon{
+  display: inline;
+}
+
+.close-icon:hover{
+  background-color: var(--color-accent2);
+}
+
+
 ::placeholder{
   color: var(--color-text);
+}
+
+@keyframes bar-1 {
+  from {width: 10rem;}
+  to {width: 35rem;}
 }
 </style>

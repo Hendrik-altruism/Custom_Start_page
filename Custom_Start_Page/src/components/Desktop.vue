@@ -56,7 +56,7 @@ import SearchItem from './SearchItem.vue'
       <SpringerIcon @click="changeSearch('springer')"/>
     </div>
 
-    <div id="searchbarSpringer" class="iconelement searchbar">
+    <div id="searchbar-springer" class="iconelement searchbar popup">
       <SearchItem searchbarType="springer"/>
     </div> 
 
@@ -64,7 +64,7 @@ import SearchItem from './SearchItem.vue'
       <GoogleIcon @click="changeSearch('google')"/>
     </div>
 
-    <div id="searchbarGoogle" class="iconelement searchbar">
+    <div id="searchbar-google" class="iconelement searchbar popup">
       <SearchItem searchbarType="google"/>
     </div> 
 
@@ -72,7 +72,7 @@ import SearchItem from './SearchItem.vue'
       <ScholarIcon @click="changeSearch('scholar')"/>
     </div>
 
-    <div id="searchbarScholar" class="iconelement searchbar">
+    <div id="searchbar-scholar" class="iconelement searchbar popup">
       <SearchItem searchbarType="scholar"/>
     </div> 
 
@@ -131,6 +131,7 @@ import SearchItem from './SearchItem.vue'
     <div class="iconelement">
       <INGIcon />
     </div>
+    <div id="desktop-bg" @click="handleEscape()"></div>
   </div>
 </template>
 
@@ -138,6 +139,7 @@ import SearchItem from './SearchItem.vue'
 .desktop-container{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  overflow: hidden;
 }
 
 .iconelement{
@@ -175,28 +177,51 @@ import SearchItem from './SearchItem.vue'
   scale: 1;
 }
 
+#desktop-bg{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 50;
+  background-color: transparent;
+  display: none;
+}
 </style>
 
 <script>
 
+let handleEscape = () => {
+  document.querySelectorAll(".popup").forEach(element => {
+    element.style.display = "none";
+  })
+  document.querySelectorAll(".searchsvg").forEach(element => {
+    element.style.display = "flex";
+  });
+  document.getElementById("desktop-bg").style.display = "none";
+}
+
 let changeSearch = (engine) => {
   switch (engine) {
         case "springer":
-            const searchbarSpringer = document.getElementById("searchbarSpringer");
+            const searchbarSpringer = document.getElementById("searchbar-springer");
             searchbarSpringer.style.display = "flex";
             searchbarSpringer.querySelector(".search-string").focus();
+            document.getElementById("desktop-bg").style.display = "block";
             break;
         
         case "google":
-            const searchbarGoogle = document.getElementById("searchbarGoogle");
+            const searchbarGoogle = document.getElementById("searchbar-google");
             searchbarGoogle.style.display = "flex";
             searchbarGoogle.querySelector(".search-string").focus();
+            document.getElementById("desktop-bg").style.display = "block";
             break;
         
         case "scholar":
-            const searchbarScholar = document.getElementById("searchbarScholar");
+            const searchbarScholar = document.getElementById("searchbar-scholar");
             searchbarScholar.style.display = "flex";
             searchbarScholar.querySelector(".search-string").focus();
+            document.getElementById("desktop-bg").style.display = "block";
             break;
 
         default:
