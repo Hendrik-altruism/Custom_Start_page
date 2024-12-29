@@ -22,7 +22,10 @@ import BeerwatchIcon from './icons/IconBeerwatch.vue'
 import GoogleIcon from './icons/IconGoogle.vue'
 import ScholarIcon from './icons/IconScholar.vue'
 import SpringerIcon from './icons/IconSpringer.vue'
+import OutlookIcon from './icons/IconOutlook.vue'
+import CalculatorIcon from './icons/IconCalculator.vue'
 
+import Modal from './Modal.vue'
 import SearchItem from './SearchItem.vue'
 </script>
 
@@ -131,6 +134,14 @@ import SearchItem from './SearchItem.vue'
     <div class="iconelement">
       <INGIcon />
     </div>
+
+    <div class="iconelement">
+      <OutlookIcon />
+    </div>
+
+    <div class="iconelement">
+      <CalculatorIcon />
+    </div>
     <div id="desktop-bg" @click="handleEscape()"></div>
   </div>
 </template>
@@ -179,7 +190,7 @@ import SearchItem from './SearchItem.vue'
 
 #desktop-bg{
   position: absolute;
-  top: 0;
+  top: var(--header-height);
   left: 0;
   width: 100%;
   height: 100%;

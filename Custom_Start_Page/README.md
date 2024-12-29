@@ -57,9 +57,6 @@ npm run lint
 ```
 
 
-Plan -> Background element mit z-index 50 und über die ganze seite -> click -> close all Modal/Suche
-
-Modal und suche -> z-index 100 -> click -> rufe background auf
 
 
-Bug Background
+Search -> click bg to remove searchbar

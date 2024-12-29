@@ -9,6 +9,7 @@ window.onload = openDB();
 </script>
 
 <template>
+  
   <header>
     <div class="wrapper">
       <DolphinMirrorIcon />    
@@ -30,7 +31,8 @@ header {
     place-items: center;
     justify-content: space-between;
     background-color: var(--color-header-bg);
-    padding: 30px;
+    padding: 30px;  
+    height: var(--header-height);
   }
 
   .logo {

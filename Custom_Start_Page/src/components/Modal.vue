@@ -4,10 +4,10 @@ import { ref } from 'vue';
 import SearchIcon from './icons/IconSearch.vue';
 import HistoryIcon from './icons/IconHistory.vue';
 import CloseIcon from './icons/IconClose.vue';
-import { saveSearch, loadSearches, deleteByQuery } from './../assets/indexedDB.js';
+import { saveSearch, loadSearches, deleteByQuery } from '../assets/indexedDB.js';
 
 const props = defineProps({
-  searchbarType: {
+  modalType: {
     type: String,
     required: true,
   },
@@ -15,26 +15,6 @@ const props = defineProps({
 
 let searchHistoryItems = ref([]);
 let textInput = ref(null);
-let keyPos = ref(-1);
-
-let focusIn = () => {
-  document.querySelectorAll(".searchsvg").forEach(element => {
-    element.style.display = "none";
-  });
-  updateSearches();
-}
-
-let focusOut = (event) => {
-  textInput.value.value = "";
-  keyPos.value = -1;
-}
-
-let updateSearches = async () => {
-  keyPos.value = -1;
-  const searches = await loadSearches(props.searchbarType);
-  const results = searches.filter((element) => element.query.toLowerCase().trim().includes(textInput.value.value.toLowerCase().trim()));
-  addSearchHistory(results)
-}
 
 let search = () => {
     let url = "";
@@ -60,37 +40,6 @@ let search = () => {
     }
     textInput.value.value = "";
     window.open(url, "_self");
-}
-
-let addSearchHistory = (searches) => {
-  searchHistoryItems.value = [];
-  for (let i = (searches.length-1); i >= 0 && i > (searches.length-8); i--){
-    searchHistoryItems.value.push(searches[i]["query"])
-  }
-};
-
-let changeSelect = (value) => {
-  if(keyPos.value+value >= searchHistoryItems.value.length){
-    keyPos.value = 0;
-  }else if(keyPos.value+value < 0){
-    keyPos.value = searchHistoryItems.value.length-1;
-  }else{
-    keyPos.value = keyPos.value+value;
-  }
-  if(searchHistoryItems.value.length>0){
-    textInput.value.value = searchHistoryItems.value[keyPos.value]
-  }
-}
-
-let deleteHistory = async (item) => {
-  await deleteByQuery(item, props.searchbarType)
-  textInput.value.focus();
-  updateSearches()
-}
-
-let changeInput = (item) => {
-  textInput.value.value = item;
-  search()
 }
 </script>
 
