@@ -1,4 +1,6 @@
 <script setup>
+import { ref } from 'vue';
+
 import YouTubeIcon from './icons/IconYouTube.vue'
 import TelekomIcon from './icons/IconTelekom.vue'
 import ConetIcon from './icons/IconConet.vue'
@@ -24,35 +26,43 @@ import ScholarIcon from './icons/IconScholar.vue'
 import SpringerIcon from './icons/IconSpringer.vue'
 import OutlookIcon from './icons/IconOutlook.vue'
 import CalculatorIcon from './icons/IconCalculator.vue'
+import AsosIcon from './icons/IconAsos.vue'
 
+import urls from '../assets/links.json';
 import Modal from './Modal.vue'
 import SearchItem from './SearchItem.vue'
+
+
+const showModal = ref(false);
+const modalType = ref('Information');
+
+
 </script>
 
 <template>
   <div class="desktop-container">
     <div class="iconelement">
-      <YouTubeIcon />
+      <YouTubeIcon @click="exec('youtube')"/>
     </div>
 
     <div class="iconelement">
-      <WhatsAppIcon />
+      <WhatsAppIcon @click="exec('whatsapp')"/>
     </div>
 
     <div class="iconelement">
-      <InstagramIcon />
+      <InstagramIcon @click="exec('instagram')"/>
     </div>
 
     <div class="iconelement">
-      <GPTIcon />
+      <GPTIcon @click="exec('chatgpt')"/>
     </div>
 
     <div class="iconelement">
-      <CalendarIcon />
+      <CalendarIcon @click="exec('calendar')"/>
     </div>
 
     <div class="iconelement">
-      <TwitchIcon />
+      <TwitchIcon @click="exec('twitch')"/>
     </div>
 
     <div class="iconelement searchsvg">
@@ -84,11 +94,11 @@ import SearchItem from './SearchItem.vue'
     </div>
 
     <div class="iconelement">
-      <NetflixIcon />
+      <NetflixIcon @click="exec('netflix')"/>
     </div>
 
     <div class="iconelement">
-      <GitHubIcon />
+      <GitHubIcon @click="exec('github')"/>
     </div>
 
     <div class="iconelement">
@@ -104,7 +114,7 @@ import SearchItem from './SearchItem.vue'
     </div>
 
     <div class="iconelement">
-      <PrimeVideoIcon />
+      <PrimeVideoIcon  @click="exec('primevideo')"/>
     </div>
 
     <div class="iconelement">
@@ -116,7 +126,7 @@ import SearchItem from './SearchItem.vue'
     </div>
 
     <div class="iconelement">
-      <AmazonIcon />
+      <AmazonIcon @click="exec('amazon')"/>
     </div>
 
     <div class="iconelement">
@@ -128,7 +138,7 @@ import SearchItem from './SearchItem.vue'
     </div>
 
     <div class="iconelement">
-      <SparkasseIcon />
+      <SparkasseIcon @click="exec('sparkasse')"/>
     </div>
 
     <div class="iconelement">
@@ -136,7 +146,7 @@ import SearchItem from './SearchItem.vue'
     </div>
 
     <div class="iconelement">
-      <OutlookIcon />
+      <AsosIcon @click="exec('asos')"/>
     </div>
 
     <div class="iconelement">
@@ -201,6 +211,19 @@ import SearchItem from './SearchItem.vue'
 </style>
 
 <script>
+
+let exec = (key) => {
+  if(urls[key].display_modal){
+    openModal(urls[key])
+  }else{
+    window.open(urls[key].links, "_self");
+  }
+}
+
+let openModal = (item) => {
+  document.getElementById("desktop-bg").style.display = "block";
+  console.log(item)
+}
 
 let handleEscape = () => {
   document.querySelectorAll(".popup").forEach(element => {

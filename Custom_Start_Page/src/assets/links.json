@@ -1,0 +1,51 @@
+{
+    "youtube": {
+        "links": "https://www.youtube.com/",
+        "display_modal": false
+    },
+    "whatsapp": {
+        "links": "https://web.whatsapp.com/",
+        "display_modal": false
+    },
+    "asos": {
+        "links": "https://www.asos.com/de/herren/",
+        "display_modal": false
+    },
+    "sparkasse": {
+        "links": "https://www.ksk-koeln.de/de/home/onlinebanking/nbf/finanzuebersicht.html?n=true",
+        "display_modal": false
+    },
+    "amazon": {
+        "links": "https://www.amazon.de/",
+        "display_modal": false
+    },
+    "primevideo": {
+        "links": "https://www.amazon.de/gp/video/storefront",
+        "display_modal": false
+    },
+    "netflix": {
+        "links": "https://www.netflix.com/browse",
+        "display_modal": false
+    },
+    "twitch": {
+        "links": "https://www.twitch.tv/",
+        "display_modal": false
+    },
+    "chatgpt": {
+        "links": "https://chatgpt.com/",
+        "display_modal": false
+    },
+    "instagram": {
+        "links": "https://www.instagram.com/",
+        "display_modal": false
+    },
+    "calendar": {
+        "links": "https://calendar.google.com/calendar/u/0/r",
+        "display_modal": false
+    },
+    "github": {
+        "links": [{"Startseite": "https://github.com/"}, {"Hendrik-Altruism": "https://github.com/Hendrik-altruism"}, {"Eigene Browserstartseite": "https://github.com/Hendrik-altruism/Custom_Start_page"}, {"Prefect Projekt": "https://calendar.google.com/calendar/u/0/r"}, {"Bonuspunkte System": "https://github.com/Hendrik-altruism/BonusPoint_System"}],
+        "display_modal": true,
+        "title": "GitHub"
+    }
+}
