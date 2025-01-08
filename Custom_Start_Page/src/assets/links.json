@@ -47,5 +47,14 @@
         "links": [{"Startseite": "https://github.com/"}, {"Hendrik-Altruism": "https://github.com/Hendrik-altruism"}, {"Eigene Browserstartseite": "https://github.com/Hendrik-altruism/Custom_Start_page"}, {"Prefect Projekt": "https://calendar.google.com/calendar/u/0/r"}, {"Bonuspunkte System": "https://github.com/Hendrik-altruism/BonusPoint_System"}],
         "display_modal": true,
         "title": "GitHub"
+    },
+    "job": {
+        "links": [{"Document": "https://docs.google.com/document/d/1zpFfEsXtHaOxjO28Mfk_Ogcj3GLgOpfhnHmASVVgR6A/edit?tab=t.0"}],
+        "display_modal": true,
+        "title": "Jobs"
+    },
+    "ing": {
+        "links": "https://banking.ing.de/app/obligo/obligo?x=sBhUuiSH5TOY",
+        "display_modal": false
     }
 }

@@ -15,6 +15,7 @@ const props = defineProps({
 
 let searchHistoryItems = ref([]);
 let textInput = ref(null);
+let suggInput = ref(null);
 let keyPos = ref(-1);
 
 let focusIn = () => {
@@ -32,8 +33,13 @@ let focusOut = (event) => {
 let updateSearches = async () => {
   keyPos.value = -1;
   const searches = await loadSearches(props.searchbarType);
-  const results = searches.filter((element) => element.query.toLowerCase().trim().includes(textInput.value.value.toLowerCase().trim()));
-  addSearchHistory(results)
+  const resultsMatch = searches.filter((element) => element.query.toLowerCase().trim().startsWith(textInput.value.value.toLowerCase().trim()));
+  const resultsHistory = searches.filter((element) => element.query.toLowerCase().trim().includes(textInput.value.value.toLowerCase().trim()));
+  if((resultsMatch.length>0)&&(textInput.value.value.length>0)){suggInput.value=resultsMatch[resultsMatch.length-1].query.substring(textInput.value.value.length);
+    console.log(suggInput.value)
+    console.log(textInput.value.selectionStart)
+  }
+  addSearchHistory(resultsHistory)
 }
 
 let search = () => {

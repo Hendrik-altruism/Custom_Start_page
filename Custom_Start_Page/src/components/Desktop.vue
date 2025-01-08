@@ -34,8 +34,60 @@ import SearchItem from './SearchItem.vue'
 
 
 const showModal = ref(false);
-const modalType = ref('Information');
+const showSearch = ref(false);
+const modalContent = ref('linksitem');
 
+let exec = (key) => {
+  if(urls[key].display_modal){
+    openModal(urls[key])
+  }else{
+    window.open(urls[key].links, "_self");
+  }
+}
+
+let openModal = (item) => {
+  modalContent.value = item;
+  showModal.value = true;
+}
+
+let handleEscape = () => {
+  document.querySelectorAll(".popup").forEach(element => {
+    element.style.display = "none";
+  })
+  document.querySelectorAll(".searchsvg").forEach(element => {
+    element.style.display = "flex";
+  });
+  showModal.value = false;
+  showSearch.value = false;
+}
+
+let changeSearch = (engine) => {
+  switch (engine) {
+        case "springer":
+            const searchbarSpringer = document.getElementById("searchbar-springer");
+            searchbarSpringer.style.display = "flex";
+            searchbarSpringer.querySelector(".search-string").focus();
+            showSearch.value = true;
+            break;
+        
+        case "google":
+            const searchbarGoogle = document.getElementById("searchbar-google");
+            searchbarGoogle.style.display = "flex";
+            searchbarGoogle.querySelector(".search-string").focus();
+            showSearch.value = true;
+            break;
+        
+        case "scholar":
+            const searchbarScholar = document.getElementById("searchbar-scholar");
+            searchbarScholar.style.display = "flex";
+            searchbarScholar.querySelector(".search-string").focus();
+            showSearch.value = true;
+            break;
+
+        default:
+            break;
+    }
+}
 
 </script>
 
@@ -90,7 +142,7 @@ const modalType = ref('Information');
     </div> 
 
     <div class="iconelement">
-      <JobIcon />
+      <JobIcon @click="exec('job')"/>
     </div>
 
     <div class="iconelement">
@@ -142,7 +194,7 @@ const modalType = ref('Information');
     </div>
 
     <div class="iconelement">
-      <INGIcon />
+      <INGIcon @click="exec('ing')"/>
     </div>
 
     <div class="iconelement">
@@ -152,7 +204,10 @@ const modalType = ref('Information');
     <div class="iconelement">
       <CalculatorIcon />
     </div>
-    <div id="desktop-bg" @click="handleEscape()"></div>
+
+    <Modal v-if="showModal" :content="modalContent"/>
+
+    <div v-if="showModal||showSearch" id="desktop-bg" @click="handleEscape()"></div>
   </div>
 </template>
 
@@ -205,62 +260,11 @@ const modalType = ref('Information');
   width: 100%;
   height: 100%;
   z-index: 50;
-  background-color: transparent;
-  display: none;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 </style>
 
 <script>
 
-let exec = (key) => {
-  if(urls[key].display_modal){
-    openModal(urls[key])
-  }else{
-    window.open(urls[key].links, "_self");
-  }
-}
-
-let openModal = (item) => {
-  document.getElementById("desktop-bg").style.display = "block";
-  console.log(item)
-}
-
-let handleEscape = () => {
-  document.querySelectorAll(".popup").forEach(element => {
-    element.style.display = "none";
-  })
-  document.querySelectorAll(".searchsvg").forEach(element => {
-    element.style.display = "flex";
-  });
-  document.getElementById("desktop-bg").style.display = "none";
-}
-
-let changeSearch = (engine) => {
-  switch (engine) {
-        case "springer":
-            const searchbarSpringer = document.getElementById("searchbar-springer");
-            searchbarSpringer.style.display = "flex";
-            searchbarSpringer.querySelector(".search-string").focus();
-            document.getElementById("desktop-bg").style.display = "block";
-            break;
-        
-        case "google":
-            const searchbarGoogle = document.getElementById("searchbar-google");
-            searchbarGoogle.style.display = "flex";
-            searchbarGoogle.querySelector(".search-string").focus();
-            document.getElementById("desktop-bg").style.display = "block";
-            break;
-        
-        case "scholar":
-            const searchbarScholar = document.getElementById("searchbar-scholar");
-            searchbarScholar.style.display = "flex";
-            searchbarScholar.querySelector(".search-string").focus();
-            document.getElementById("desktop-bg").style.display = "block";
-            break;
-
-        default:
-            break;
-    }
-}
 
 </script>

@@ -59,4 +59,11 @@ npm run lint
 
 
 
-Search -> click bg to remove searchbar
+maybe: 
+
+- document.body.style.overflow = "hidden"
+- add links
+- link hierarchy
+- custom link styles or icons
+- animations
+- right Nav

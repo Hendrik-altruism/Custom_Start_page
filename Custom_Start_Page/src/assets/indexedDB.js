@@ -1,7 +1,7 @@
 let db; // Globale Variable für die Datenbank
 const dbName = "SearchDB";
 const storeNames = ["springer", "google", "scholar"];
-const storeLimit = 2000;
+const storeLimit = 5000;
 
 
 
