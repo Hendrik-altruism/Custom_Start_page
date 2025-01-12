@@ -1,4 +1,6 @@
 <script setup>
+import ChevronIcon from './icons/IconChevronRight.vue';
+
 
 const props = defineProps({
   content: {
@@ -18,10 +20,24 @@ let search = (url) => {
         {{ content.title }}
       </div>
       <div class="links">
-        <div v-for="(item, index) in content.links" :key="index" class="link-item">
-          <div class="front-search"  @click="search(Object.values(item)[0])">
+        <div v-for="(item, index) in content.links" :key="index">
+
+          <div v-if="Array.isArray(Object.values(item)[0])" class="open-search">
+            <div class="sublink">
+              {{ Object.keys(item)[0] }}
+              <ChevronIcon />
+            </div>
+            <div v-for="(sublink, subIndex) in Object.values(item)[0]" :key="subIndex" class="sublink-box">
+              <div class="front-search sub-front-search" @click="search(sublink)">
+                {{ Object.keys(sublink)[0] }}
+              </div>
+            </div>
+          </div>
+
+          <div v-else class="front-search"  @click="search(Object.values(item)[0])">
               {{ Object.keys(item)[0] }}
           </div>
+
         </div>
       </div>
     </div>
@@ -40,7 +56,8 @@ let search = (url) => {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
   border-radius: 30px;
   max-height: 60vh; 
-  overflow: auto;   
+  overflow: auto;  
+  padding-bottom: 20px; 
 }
 
 .title{
@@ -55,17 +72,23 @@ let search = (url) => {
   color: var(--color-accent-text);
 }
 
-.link-item{
+.front-search{
   padding: 5px 30px;
 }
 
-.link-item:hover {
+.front-search:hover {
   cursor: pointer;
   background-color: var(--color-hover-text);
   border-left: 3px solid var(--color-border);
 }
 
-.link-item:last-of-type{
-  margin-bottom: 20px;
+.sublink{
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 30px;
+}
+
+.sub-front-search{
+  padding-left: 60px;
 }
 </style>

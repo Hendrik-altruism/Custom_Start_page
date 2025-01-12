@@ -27,25 +27,34 @@ let focusIn = () => {
 
 let focusOut = (event) => {
   textInput.value.value = "";
+  suggInput.value.value = "";
   keyPos.value = -1;
 }
+
 
 let updateSearches = async () => {
   keyPos.value = -1;
   const searches = await loadSearches(props.searchbarType);
-  const resultsMatch = searches.filter((element) => element.query.toLowerCase().trim().startsWith(textInput.value.value.toLowerCase().trim()));
+  const resultsMatch = searches.filter((element) => element.query.trim().startsWith(textInput.value.value.trim()));
   const resultsHistory = searches.filter((element) => element.query.toLowerCase().trim().includes(textInput.value.value.toLowerCase().trim()));
-  if((resultsMatch.length>0)&&(textInput.value.value.length>0)){suggInput.value=resultsMatch[resultsMatch.length-1].query.substring(textInput.value.value.length);
-    console.log(suggInput.value)
-    console.log(textInput.value.selectionStart)
+  if((resultsMatch.length>0)&&(textInput.value.value.length>0)){suggInput.value.value=resultsMatch[resultsMatch.length-1].query;
+    console.log(suggInput.value.value)
+  }else{
+    suggInput.value.value = "";
   }
   addSearchHistory(resultsHistory)
+}
+
+let tabSearch = () => {
+  textInput.value.value = suggInput.value.value;
+  search();
 }
 
 let search = () => {
     let url = "";
     let query = textInput.value.value;
-    switch (props.searchbarType) {
+    if(query != ""){
+      switch (props.searchbarType) {
         case "springer":
             url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
             saveSearch(query, "springer");
@@ -64,8 +73,10 @@ let search = () => {
         default:
             break;
     }
-    textInput.value.value = "";
-    window.open(url, "_self");
+      textInput.value.value = "";
+      suggInput.value.value = "";
+      window.open(url, "_self");
+    }
 }
 
 let addSearchHistory = (searches) => {
@@ -103,7 +114,8 @@ let changeInput = (item) => {
 <template>
     <div class="search-container">
       <div class="input-container">
-        <input ref="textInput" placeholder="Suche..." id="searchbar" class="searchbar-element search-string" @focusin="focusIn" @focusout="(event) => focusOut(event)" @keyup.enter="search" @keyup.escape="focusOut" @input="updateSearches" @keyup.up="changeSelect(-1)" @keyup.down="changeSelect(1)">
+        <input ref="textInput" placeholder="Suche..." id="searchbar" class="searchbar-element search-string" @focusin="focusIn" @focusout="(event) => focusOut(event)" @keyup.ctrl.enter="tabSearch" @keyup.enter="search" @keyup.escape="focusOut" @input="updateSearches" @keyup.up="changeSelect(-1)" @keyup.down="changeSelect(1)">
+        <input ref="suggInput" class="searchbar-paragraph"></input>
         <SearchIcon />
       </div>
       <div class="searches">
@@ -200,6 +212,7 @@ let changeInput = (item) => {
     animation-duration: 1s;
     animation-fill-mode: forwards;
     color: var(--color-heading);
+    z-index: 300;
 }
 
 .close-icon{
@@ -220,6 +233,16 @@ let changeInput = (item) => {
   background-color: var(--color-accent2);
 }
 
+.searchbar-paragraph{
+  border: none;
+  outline: none;
+  background: transparent;
+  position: absolute;
+  font-weight: 500;
+  font-size: large;
+  z-index: 250;
+  color: var(--color-text);
+}
 
 ::placeholder{
   color: var(--color-text);

@@ -24,7 +24,7 @@ import BeerwatchIcon from './icons/IconBeerwatch.vue'
 import GoogleIcon from './icons/IconGoogle.vue'
 import ScholarIcon from './icons/IconScholar.vue'
 import SpringerIcon from './icons/IconSpringer.vue'
-import OutlookIcon from './icons/IconOutlook.vue'
+import TravelIcon from './icons/IconTravel.vue'
 import CalculatorIcon from './icons/IconCalculator.vue'
 import AsosIcon from './icons/IconAsos.vue'
 
@@ -182,11 +182,11 @@ let changeSearch = (engine) => {
     </div>
 
     <div class="iconelement">
-      <MailIcon />
+      <MailIcon @click="exec('mail')"/>
     </div>
 
     <div class="iconelement">
-      <TradeRepublicIcon />
+      <TradeRepublicIcon @click="exec('trade')"/>
     </div>
 
     <div class="iconelement">
@@ -202,7 +202,11 @@ let changeSearch = (engine) => {
     </div>
 
     <div class="iconelement">
-      <CalculatorIcon />
+      <TravelIcon  @click="exec('travel')"/>
+    </div>
+
+    <div class="iconelement">
+      <CalculatorIcon @click="exec('calculator')"/>
     </div>
 
     <Modal v-if="showModal" :content="modalContent"/>

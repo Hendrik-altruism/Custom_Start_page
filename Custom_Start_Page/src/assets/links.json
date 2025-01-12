@@ -44,7 +44,7 @@
         "display_modal": false
     },
     "github": {
-        "links": [{"Startseite": "https://github.com/"}, {"Hendrik-Altruism": "https://github.com/Hendrik-altruism"}, {"Eigene Browserstartseite": "https://github.com/Hendrik-altruism/Custom_Start_page"}, {"Prefect Projekt": "https://calendar.google.com/calendar/u/0/r"}, {"Bonuspunkte System": "https://github.com/Hendrik-altruism/BonusPoint_System"}],
+        "links": [{"Startseite": "https://github.com/"}, {"Profil": "https://github.com/Hendrik-altruism"}, {"Projekte": [{"Eigene Browserstartseite": "https://github.com/Hendrik-altruism/Custom_Start_page"}, {"Prefect Projekt": "https://github.com/Hendrik-altruism/Prefect-Project"}, {"Bonuspunkte System": "https://github.com/Hendrik-altruism/BonusPoint_System"}]}],
         "display_modal": true,
         "title": "GitHub"
     },
@@ -56,5 +56,23 @@
     "ing": {
         "links": "https://banking.ing.de/app/obligo/obligo?x=sBhUuiSH5TOY",
         "display_modal": false
+    },
+    "calculator": {
+        "links": "https://www.google.com/search?q=calculator",
+        "display_modal": false
+    },
+    "mail": {
+        "links": [{"Hbrs": "https://owa.stud.h-brs.de/owa/#path=/mail/"}, {"GMail": "https://mail.google.com/mail/u/0/#inbox"}, {"T-Online": "https://www.t-online.de/"}],
+        "display_modal": true,
+        "title": "Mail"
+    },
+    "trade": {
+        "links": "https://traderepublic.com/de-de",
+        "display_modal": false
+    },
+    "travel": {
+        "links": [{"Hbrs": "https://owa.stud.h-brs.de/owa/#path=/mail/"}, {"GMail": "https://mail.google.com/mail/u/0/#inbox"}, {"T-Online": "https://www.t-online.de/"}],
+        "display_modal": true,
+        "title": "Reisen"
     }
 }
