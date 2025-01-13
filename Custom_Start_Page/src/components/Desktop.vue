@@ -27,6 +27,7 @@ import SpringerIcon from './icons/IconSpringer.vue'
 import TravelIcon from './icons/IconTravel.vue'
 import CalculatorIcon from './icons/IconCalculator.vue'
 import AsosIcon from './icons/IconAsos.vue'
+import ProjectsIcon from './icons/IconProjects.vue'
 
 import urls from '../assets/links.json';
 import Modal from './Modal.vue'
@@ -162,7 +163,7 @@ let changeSearch = (engine) => {
     </div>
 
     <div class="iconelement">
-      <WohnungenIcon />
+      <WohnungenIcon @click="exec('wohnungen')"/>
     </div>
 
     <div class="iconelement">
@@ -170,11 +171,11 @@ let changeSearch = (engine) => {
     </div>
 
     <div class="iconelement">
-      <BeerwatchIcon />
+      <BeerwatchIcon @click="exec('freunde')"/>
     </div>
 
     <div class="iconelement">
-      <HbrsIcon />
+      <HbrsIcon @click="exec('hbrs')"/>
     </div>
 
     <div class="iconelement">
@@ -262,7 +263,7 @@ let changeSearch = (engine) => {
   top: var(--header-height);
   left: 0;
   width: 100%;
-  height: 100%;
+  height: calc(100vmax - var(--header-height));
   z-index: 50;
   background-color: rgba(0, 0, 0, 0.4);
 }

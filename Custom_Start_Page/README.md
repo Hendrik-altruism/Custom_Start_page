@@ -60,12 +60,14 @@ npm run lint
 TODO:
 
 - fix tab
+- viewport background height -> document.body.style.overflow = "hidden"
 
 maybe: 
 
-- document.body.style.overflow = "hidden"
 - add links
-- link hierarchy
+- style scrollbar
 - custom link styles or icons
 - animations
 - right Nav
+- links on mouse scroll click
+
