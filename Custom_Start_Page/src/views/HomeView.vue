@@ -1,10 +1,10 @@
 <script setup>
-import IconBar from '../components/Desktop.vue'
+import Desktop from '../components/Desktop.vue'
 </script>
 
 <template>
   <main>
-    <IconBar />
+    <Desktop />
   </main>
 </template>
 

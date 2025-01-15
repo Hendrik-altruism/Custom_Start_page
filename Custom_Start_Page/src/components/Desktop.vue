@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { nextTick } from 'vue';
 
 import YouTubeIcon from './icons/IconYouTube.vue'
 import TelekomIcon from './icons/IconTelekom.vue'
@@ -27,7 +28,8 @@ import SpringerIcon from './icons/IconSpringer.vue'
 import TravelIcon from './icons/IconTravel.vue'
 import CalculatorIcon from './icons/IconCalculator.vue'
 import AsosIcon from './icons/IconAsos.vue'
-import ProjectsIcon from './icons/IconProjects.vue'
+import LinkedIcon from './icons/IconLinked.vue'
+import DisneyIcon from './icons/IconDisney.vue'
 
 import urls from '../assets/links.json';
 import Modal from './Modal.vue'
@@ -35,61 +37,39 @@ import SearchItem from './SearchItem.vue'
 
 
 const showModal = ref(false);
-const showSearch = ref(false);
-const modalContent = ref('linksitem');
+const modalContent = ref(null);
 
-let exec = (key) => {
-  if(urls[key].display_modal){
-    openModal(urls[key])
+const showSearch = ref(false);
+const searchbarType = ref("");
+const searchbarUrl = ref("");
+const searchbarObject = ref(null);
+
+
+let exec = async (key) => {
+  if(urls[key].display == "modal"){
+    modalContent.value = urls[key];
+    showModal.value = true;
+    document.body.style.overflow = "hidden";
+  }else if (urls[key].display == "search"){
+    showSearch.value = true;
+    searchbarType.value = key;
+    searchbarUrl.value = urls[key].links;
+    nextTick(() => {
+      const inputElement = searchbarObject.value.querySelector(".search-string");
+      if (inputElement) {
+        inputElement.focus();
+      }
+    });
   }else{
     window.open(urls[key].links, "_self");
   }
 }
 
-let openModal = (item) => {
-  modalContent.value = item;
-  showModal.value = true;
-}
-
 let handleEscape = () => {
-  document.querySelectorAll(".popup").forEach(element => {
-    element.style.display = "none";
-  })
-  document.querySelectorAll(".searchsvg").forEach(element => {
-    element.style.display = "flex";
-  });
   showModal.value = false;
   showSearch.value = false;
+  document.body.style.overflow = "visible";
 }
-
-let changeSearch = (engine) => {
-  switch (engine) {
-        case "springer":
-            const searchbarSpringer = document.getElementById("searchbar-springer");
-            searchbarSpringer.style.display = "flex";
-            searchbarSpringer.querySelector(".search-string").focus();
-            showSearch.value = true;
-            break;
-        
-        case "google":
-            const searchbarGoogle = document.getElementById("searchbar-google");
-            searchbarGoogle.style.display = "flex";
-            searchbarGoogle.querySelector(".search-string").focus();
-            showSearch.value = true;
-            break;
-        
-        case "scholar":
-            const searchbarScholar = document.getElementById("searchbar-scholar");
-            searchbarScholar.style.display = "flex";
-            searchbarScholar.querySelector(".search-string").focus();
-            showSearch.value = true;
-            break;
-
-        default:
-            break;
-    }
-}
-
 </script>
 
 <template>
@@ -107,7 +87,7 @@ let changeSearch = (engine) => {
     </div>
 
     <div class="iconelement">
-      <GPTIcon @click="exec('chatgpt')"/>
+      <LinkedIcon  @click="exec('linked')"/>
     </div>
 
     <div class="iconelement">
@@ -115,31 +95,23 @@ let changeSearch = (engine) => {
     </div>
 
     <div class="iconelement">
-      <TwitchIcon @click="exec('twitch')"/>
+      <PrimeVideoIcon @click="exec('primevideo')"/>
     </div>
 
-    <div class="iconelement searchsvg">
-      <SpringerIcon @click="changeSearch('springer')"/>
+    <div v-show="!showSearch" class="iconelement searchsvg">
+      <SpringerIcon @click="exec('springer')"/>
     </div>
 
-    <div id="searchbar-springer" class="iconelement searchbar popup">
-      <SearchItem searchbarType="springer"/>
-    </div> 
-
-    <div class="iconelement searchsvg">
-      <GoogleIcon @click="changeSearch('google')"/>
+    <div v-show="!showSearch" class="iconelement searchsvg">
+      <GoogleIcon @click="exec('google')"/>
     </div>
 
-    <div id="searchbar-google" class="iconelement searchbar popup">
-      <SearchItem searchbarType="google"/>
-    </div> 
-
-    <div class="iconelement searchsvg">
-      <ScholarIcon @click="changeSearch('scholar')"/>
+    <div v-show="!showSearch" class="iconelement searchsvg">
+      <ScholarIcon @click="exec('scholar')"/>
     </div>
 
-    <div id="searchbar-scholar" class="iconelement searchbar popup">
-      <SearchItem searchbarType="scholar"/>
+    <div v-show="showSearch" ref="searchbarObject" class="iconelement searchbar">
+      <SearchItem :searchbarType="searchbarType" :searchbarUrl="searchbarUrl"/>
     </div> 
 
     <div class="iconelement">
@@ -159,7 +131,7 @@ let changeSearch = (engine) => {
     </div>
 
     <div class="iconelement">
-      <TelekomIcon />
+      <GPTIcon @click="exec('chatgpt')"/>
     </div>
 
     <div class="iconelement">
@@ -167,7 +139,7 @@ let changeSearch = (engine) => {
     </div>
 
     <div class="iconelement">
-      <PrimeVideoIcon  @click="exec('primevideo')"/>
+      <DisneyIcon @click="exec('disney')"/>
     </div>
 
     <div class="iconelement">
@@ -187,7 +159,7 @@ let changeSearch = (engine) => {
     </div>
 
     <div class="iconelement">
-      <TradeRepublicIcon @click="exec('trade')"/>
+      <TwitchIcon @click="exec('twitch')"/>
     </div>
 
     <div class="iconelement">
@@ -199,11 +171,27 @@ let changeSearch = (engine) => {
     </div>
 
     <div class="iconelement">
-      <AsosIcon @click="exec('asos')"/>
+      <TradeRepublicIcon @click="exec('trade')"/>
     </div>
 
     <div class="iconelement">
       <TravelIcon  @click="exec('travel')"/>
+    </div>
+
+    <div class="iconelement">
+      <TelekomIcon />
+    </div>
+
+    <div class="iconelement">
+      <AsosIcon @click="exec('asos')"/>
+    </div>
+
+    <div class="iconelement">
+      
+    </div>
+
+    <div class="iconelement">
+      
     </div>
 
     <div class="iconelement">
@@ -240,7 +228,6 @@ let changeSearch = (engine) => {
 
 .searchbar{
   grid-column: span 3;
-  display: none;
 }
 
 @media (hover: hover) {
@@ -268,8 +255,3 @@ let changeSearch = (engine) => {
   background-color: rgba(0, 0, 0, 0.4);
 }
 </style>
-
-<script>
-
-
-</script>

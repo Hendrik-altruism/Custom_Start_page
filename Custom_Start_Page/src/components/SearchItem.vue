@@ -11,6 +11,10 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  searchbarUrl: {
+    type: String,
+    required: true,
+  },
 });
 
 let searchHistoryItems = ref([]);
@@ -18,12 +22,6 @@ let textInput = ref(null);
 let suggInput = ref(null);
 let keyPos = ref(-1);
 
-let focusIn = () => {
-  document.querySelectorAll(".searchsvg").forEach(element => {
-    element.style.display = "none";
-  });
-  updateSearches();
-}
 
 let focusOut = (event) => {
   textInput.value.value = "";
@@ -51,31 +49,12 @@ let tabSearch = () => {
 }
 
 let search = () => {
-    let url = "";
-    let query = textInput.value.value;
+    let query = encodeURIComponent(textInput.value.value);
     if(query != ""){
-      switch (props.searchbarType) {
-        case "springer":
-            url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-            saveSearch(query, "springer");
-            break;
-        
-        case "google":
-            url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-            saveSearch(query, "google");
-            break;
-        
-        case "scholar":
-            url = `https://scholar.google.de/scholar?hl=de&as_sdt=0%2C5&q=${encodeURIComponent(query)}&btnG=`;
-            saveSearch(query, "scholar");
-            break;
-
-        default:
-            break;
-    }
       textInput.value.value = "";
       suggInput.value.value = "";
-      window.open(url, "_self");
+      saveSearch(query, props.searchbarType);
+      window.open(props.searchbarUrl+query, "_self");
     }
 }
 
@@ -114,7 +93,7 @@ let changeInput = (item) => {
 <template>
     <div class="search-container">
       <div class="input-container">
-        <input ref="textInput" placeholder="Suche..." id="searchbar" class="searchbar-element search-string" @focusin="focusIn" @focusout="(event) => focusOut(event)" @keyup.ctrl.enter="tabSearch" @keyup.enter="search" @keyup.escape="focusOut" @input="updateSearches" @keyup.up="changeSelect(-1)" @keyup.down="changeSelect(1)">
+        <input type="text" ref="textInput" placeholder="Suche..." class="searchbar-element search-string" @focusin="updateSearches" @focusout="(event) => focusOut(event)" @keyup.ctrl.enter="tabSearch" @keyup.enter="search" @keyup.escape="focusOut" @input="updateSearches" @keyup.up="changeSelect(-1)" @keyup.down="changeSelect(1)">
         <input ref="suggInput" class="searchbar-paragraph"></input>
         <SearchIcon />
       </div>

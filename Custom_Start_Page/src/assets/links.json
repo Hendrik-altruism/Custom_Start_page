@@ -1,160 +1,246 @@
 {
-    "youtube": {
-        "links": "https://www.youtube.com/",
-        "display_modal": false
-    },
-    "whatsapp": {
-        "links": "https://web.whatsapp.com/",
-        "display_modal": false
-    },
-    "asos": {
-        "links": "https://www.asos.com/de/herren/",
-        "display_modal": false
-    },
-    "sparkasse": {
-        "links": "https://www.ksk-koeln.de/de/home/onlinebanking/nbf/finanzuebersicht.html?n=true",
-        "display_modal": false
-    },
-    "amazon": {
-        "links": "https://www.amazon.de/",
-        "display_modal": false
-    },
-    "primevideo": {
-        "links": "https://www.amazon.de/gp/video/storefront",
-        "display_modal": false
-    },
-    "netflix": {
-        "links": "https://www.netflix.com/browse",
-        "display_modal": false
-    },
-    "twitch": {
-        "links": "https://www.twitch.tv/",
-        "display_modal": false
-    },
-    "chatgpt": {
-        "links": "https://chatgpt.com/",
-        "display_modal": false
-    },
-    "instagram": {
-        "links": "https://www.instagram.com/",
-        "display_modal": false
-    },
-    "calendar": {
-        "links": "https://calendar.google.com/calendar/u/0/r",
-        "display_modal": false
-    },
-    "github": {
-        "links": [
-            {"Startseite": "https://github.com/"}, 
-            {"Profil": "https://github.com/Hendrik-altruism"}, 
-            {"Projekte": [
-                {"Eigene Browserstartseite": "https://github.com/Hendrik-altruism/Custom_Start_page"}, 
-                {"Prefect Projekt": "https://github.com/Hendrik-altruism/Prefect-Project"}, 
-                {"Bonuspunkte System": "https://github.com/Hendrik-altruism/BonusPoint_System"}, 
-                {"Integration Architectures": "https://github.com/Hendrik-altruism/Integration_Architectures"}, 
-                {"Integration Architectures Aufgaben": "https://github.com/Hendrik-altruism/IA_Assignment2"},
-                {"Web Engineering": "https://github.com/Hendrik-altruism/WebEngineering"},
-                {"Minecraft PlugIn": "https://github.com/Hendrik-altruism/Minecraft_Mods"},
-                {"WI Project ChatGPT": "https://github.com/Hendrik-altruism/WI-Project-ChatGPT"},
-                {"C Spielplatz": "https://github.com/Hendrik-altruism/c-_playground"},
-                {"Python Spielplatz": "https://github.com/Hendrik-altruism/PythonPlayground"}, 
-                {"EILD Spielplatz": "https://github.com/Hendrik-altruism/EILD_SHK_Playground"}, 
-                {"EILD Phrasen": "https://github.com/Hendrik-altruism/Phrasen-"}
-                ]
-            },
-            {"LocalHost": [
-                {"8080 | Lokal": "http://localhost:8080/"}, 
-                {"5173 | Vue": "http://localhost:5173/"}, 
-                {"7086 | .Net": "https://localhost:7086/"}
-                ]
-            }
-            ],
-        "display_modal": true,
-        "title": "GitHub"
-    },
-    "job": {
-        "links": [
-            {"Document": "https://docs.google.com/document/d/1zpFfEsXtHaOxjO28Mfk_Ogcj3GLgOpfhnHmASVVgR6A/edit?tab=t.0"},
-            {"Rettungsschwimmer": [
-                {"Anzeige Freibad Sankt Augustin": "https://www.sankt-augustin.de/rettungsschwimmerinnen-und-rettungsschwimmer-gesucht-2/"}
-            ]}
-        ],
-        "display_modal": true,
-        "title": "Jobs"
-    },
-    "ing": {
-        "links": "https://banking.ing.de/app/obligo/obligo?x=sBhUuiSH5TOY",
-        "display_modal": false
-    },
-    "calculator": {
-        "links": "https://www.google.com/search?q=calculator",
-        "display_modal": false
-    },
-    "mail": {
-        "links": [
-            {"Hbrs": "https://owa.stud.h-brs.de/owa/#path=/mail/"}, 
-            {"GMail": "https://mail.google.com/mail/u/0/#inbox"}, 
-            {"T-Online": "https://www.t-online.de/"}
-        ],
-        "display_modal": true,
-        "title": "Mail"
-    },
-    "trade": {
-        "links": "https://traderepublic.com/de-de",
-        "display_modal": false
-    },
-    "travel": {
-        "links": [
-            {"Dokument": "https://docs.google.com/document/d/1cDhekejFKRazOh0AYy5e_4j3MMmoaUUkcCObjfK_-20/edit?hl=DE&tab=t.0#heading=h.oif6jyz2r5i0"}, 
-            {"2025 Thailand": [
-                {"Packliste": "https://docs.google.com/document/d/1_mV35u3Eve4Sl3D20xOtVn3VrjGT24BheMZb3Wbvc4s/edit?tab=t.0"}
-            ]}
-        ],
-        "display_modal": true,
-        "title": "Reisen"
-    },
-    "wohnungen": {
-        "links": [
-            {"Dokument": "https://docs.google.com/document/d/1NPIn06el1Hr64DZnPkPmPYmKfbf8o7kG-35vn0o9d9E/edit?hl=DE&tab=t.0"}, 
-            {"Köln Suche": [
-                {"ImmoScout": "https://www.immobilienscout24.de/Suche/radius/wohnung-mieten?centerofsearchaddress=K%C3%B6ln;;;;;Innenstadt;&numberofrooms=3.0-&price=-1400.0&pricetype=calculatedtotalrent&geocoordinates=50.93703;6.95962;5.0&enteredFrom=result_list"},
-                {"WG-Gesucht": "https://www.wg-gesucht.de/wohnungen-in-Koeln.73.2.1.0.html?offer_filter=1&city_id=73&sort_order=0&noDeact=1&categories%5B%5D=2&rent_types%5B%5D=2&rMax=1400&rmMin=3"},
-                {"ImmoWelt": "https://www.immowelt.de/classified-search?distributionTypes=Rent&estateTypes=House,Apartment&locations=AD08DE2179&numberOfRoomsMin=3&priceMax=1400&projectTypes=New_Build,Flatsharing,Short_Time_Rental,Stock"}
-            ]},
-            {"Bonn Suche": [
-                {"ImmoScout": "https://www.immobilienscout24.de/Suche/radius/wohnung-mieten?centerofsearchaddress=Bonn;;;;;Bonn-Zentrum;&numberofrooms=3.0-&price=-1400.0&pricetype=calculatedtotalrent&geocoordinates=50.7366;7.10171;4.0&enteredFrom=result_list#/"}
-            ]}
-        ],
-        "display_modal": true,
-        "title": "Wohnungen"
-    },
-    "freunde": {
-        "links": [
-            {"Dokument": "https://docs.google.com/document/d/1Gjn3-0wDroybhsqHp9VBF_uJSPQpG5Zzgthxq-gxFXU/edit?tab=t.0"}, 
-            {"Freunde": [
-                {"Aura Tabelle": "https://docs.google.com/spreadsheets/d/1fPq0zo6FtX8MZhFoA0Q3-xTuKEhsvPJNXtxsPuYn5Wk/edit?hl=de&gid=0#gid=0"},
-                {"Nitrado": "https://oauth.nitrado.net/oauth/v2/auth?locale=deu&scope=user_info+user_edit+service+service_order+ssh_keys+rootserver+long_life_token&redirect_uri=https%3A%2F%2Fserver.nitrado.net%2Foauth%2Flogin_embedded&client_id=111_sKky5xgkTMhKzfLBWV5avSKL6NjmlISEi22dp8o9KvJaBlCn7x&response_type=code&state=6Weqnl59TkvvfOxS3K7jFDr9x5eEERhB"}
-                ]
-            },
-            {"Privat": [
-                {"ToDo": "https://app.todoist.com/app/today"}
-            ]}
-        ],
-        "display_modal": true,
-        "title": "Privat"
-    },
-    "hbrs": {
-        "links": [
-            {"LEA": [
-                {"Dashboard": "https://lea.hochschule-bonn-rhein-sieg.de/ilias.php?baseClass=ilDashboardGUI&cmd=jumpToSelectedItems"},
-                {"IT-Controlling": "https://lea.hochschule-bonn-rhein-sieg.de/ilias.php?ref_id=1632102&cmdClass=ilrepositorygui&cmdNode=y1&baseClass=ilrepositorygui"}
-                ]
-            },
-            {"Apollo": "https://apollo.h-brs.de/qisserver/pages/cs/sys/portal/hisinoneStartPage.faces"}, 
-            {"Prüfungsordnung Informatik": "https://www.h-brs.de/de/studien-pruefungs-fachbereichsordnungen-informatik"},
-            {"Kursbelegung": "https://eva.inf.h-brs.de/zope/lv/student/zulassung/index_html"}
-            ],
-        "display_modal": true,
-        "title": "Hbrs"
-    }
+  "youtube": {
+    "links": "https://www.youtube.com/",
+    "display": "direkt"
+  },
+  "whatsapp": {
+    "links": "https://web.whatsapp.com/",
+    "display": "direkt"
+  },
+  "asos": {
+    "links": "https://www.asos.com/de/herren/",
+    "display": "direkt"
+  },
+  "sparkasse": {
+    "links": "https://www.ksk-koeln.de/de/home/onlinebanking/nbf/finanzuebersicht.html?n=true",
+    "display": "direkt"
+  },
+  "amazon": {
+    "links": "https://www.amazon.de/",
+    "display": "direkt"
+  },
+  "primevideo": {
+    "links": "https://www.amazon.de/gp/video/storefront",
+    "display": "direkt"
+  },
+  "netflix": {
+    "links": "https://www.netflix.com/browse",
+    "display": "direkt"
+  },
+  "twitch": {
+    "links": "https://www.twitch.tv/",
+    "display": "direkt"
+  },
+  "chatgpt": {
+    "links": "https://chatgpt.com/",
+    "display": "direkt"
+  },
+  "instagram": {
+    "links": "https://www.instagram.com/",
+    "display": "direkt"
+  },
+  "calendar": {
+    "links": "https://calendar.google.com/calendar/u/0/r",
+    "display": "direkt"
+  },
+  "github": {
+    "links": [
+      { "Startseite": "https://github.com/" },
+      { "Profil": "https://github.com/Hendrik-altruism" },
+      {
+        "Projekte": [
+          {
+            "Eigene Browserstartseite": "https://github.com/Hendrik-altruism/Custom_Start_page"
+          },
+          {
+            "Prefect Projekt": "https://github.com/Hendrik-altruism/Prefect-Project"
+          },
+          {
+            "Bonuspunkte System": "https://github.com/Hendrik-altruism/BonusPoint_System"
+          },
+          {
+            "Integration Architectures": "https://github.com/Hendrik-altruism/Integration_Architectures"
+          },
+          {
+            "Integration Architectures Aufgaben": "https://github.com/Hendrik-altruism/IA_Assignment2"
+          },
+          {
+            "Web Engineering": "https://github.com/Hendrik-altruism/WebEngineering"
+          },
+          {
+            "Minecraft PlugIn": "https://github.com/Hendrik-altruism/Minecraft_Mods"
+          },
+          {
+            "WI Project ChatGPT": "https://github.com/Hendrik-altruism/WI-Project-ChatGPT"
+          },
+          {
+            "C Spielplatz": "https://github.com/Hendrik-altruism/c-_playground"
+          },
+          {
+            "Python Spielplatz": "https://github.com/Hendrik-altruism/PythonPlayground"
+          },
+          {
+            "EILD Spielplatz": "https://github.com/Hendrik-altruism/EILD_SHK_Playground"
+          },
+          { "EILD Phrasen": "https://github.com/Hendrik-altruism/Phrasen-" }
+        ]
+      },
+      {
+        "LocalHost": [
+          { "8080 | Lokal": "http://localhost:8080/" },
+          { "5173 | Vue": "http://localhost:5173/" },
+          { "7086 | .Net": "https://localhost:7086/" }
+        ]
+      }
+    ],
+    "display": "modal",
+    "title": "GitHub"
+  },
+  "job": {
+    "links": [
+      {
+        "Document": "https://docs.google.com/document/d/1zpFfEsXtHaOxjO28Mfk_Ogcj3GLgOpfhnHmASVVgR6A/edit?tab=t.0"
+      },
+      {
+        "Rettungsschwimmer": [
+          {
+            "Anzeige Freibad Sankt Augustin": "https://www.sankt-augustin.de/rettungsschwimmerinnen-und-rettungsschwimmer-gesucht-2/"
+          }
+        ]
+      }
+    ],
+    "display": "modal",
+    "title": "Jobs"
+  },
+  "ing": {
+    "links": "https://banking.ing.de/app/obligo/obligo?x=sBhUuiSH5TOY",
+    "display": "direkt"
+  },
+  "calculator": {
+    "links": "https://www.google.com/search?q=calculator",
+    "display": "direkt"
+  },
+  "mail": {
+    "links": [
+      { "Hbrs": "https://owa.stud.h-brs.de/owa/#path=/mail/" },
+      { "GMail": "https://mail.google.com/mail/u/0/#inbox" },
+      { "T-Online": "https://www.t-online.de/" }
+    ],
+    "display": "modal",
+    "title": "Mail"
+  },
+  "trade": {
+    "links": "https://traderepublic.com/de-de",
+    "display": "direkt"
+  },
+  "travel": {
+    "links": [
+      {
+        "Dokument": "https://docs.google.com/document/d/1cDhekejFKRazOh0AYy5e_4j3MMmoaUUkcCObjfK_-20/edit?hl=DE&tab=t.0#heading=h.oif6jyz2r5i0"
+      },
+      {
+        "2025 Thailand": [
+          {
+            "Packliste": "https://docs.google.com/document/d/1_mV35u3Eve4Sl3D20xOtVn3VrjGT24BheMZb3Wbvc4s/edit?tab=t.0"
+          }
+        ]
+      }
+    ],
+    "display": "modal",
+    "title": "Reisen"
+  },
+  "wohnungen": {
+    "links": [
+      {
+        "Dokument": "https://docs.google.com/document/d/1NPIn06el1Hr64DZnPkPmPYmKfbf8o7kG-35vn0o9d9E/edit?hl=DE&tab=t.0"
+      },
+      {
+        "Köln Suche": [
+          {
+            "ImmoScout": "https://www.immobilienscout24.de/Suche/radius/wohnung-mieten?centerofsearchaddress=K%C3%B6ln;;;;;Innenstadt;&numberofrooms=3.0-&price=-1400.0&pricetype=calculatedtotalrent&geocoordinates=50.93703;6.95962;5.0&enteredFrom=result_list"
+          },
+          {
+            "WG-Gesucht": "https://www.wg-gesucht.de/wohnungen-in-Koeln.73.2.1.0.html?offer_filter=1&city_id=73&sort_order=0&noDeact=1&categories%5B%5D=2&rent_types%5B%5D=2&rMax=1400&rmMin=3"
+          },
+          {
+            "ImmoWelt": "https://www.immowelt.de/classified-search?distributionTypes=Rent&estateTypes=House,Apartment&locations=AD08DE2179&numberOfRoomsMin=3&priceMax=1400&projectTypes=New_Build,Flatsharing,Short_Time_Rental,Stock"
+          }
+        ]
+      },
+      {
+        "Bonn Suche": [
+          {
+            "ImmoScout": "https://www.immobilienscout24.de/Suche/radius/wohnung-mieten?centerofsearchaddress=Bonn;;;;;Bonn-Zentrum;&numberofrooms=3.0-&price=-1400.0&pricetype=calculatedtotalrent&geocoordinates=50.7366;7.10171;4.0&enteredFrom=result_list#/"
+          }
+        ]
+      }
+    ],
+    "display": "modal",
+    "title": "Wohnungen"
+  },
+  "freunde": {
+    "links": [
+      {
+        "Dokument": "https://docs.google.com/document/d/1Gjn3-0wDroybhsqHp9VBF_uJSPQpG5Zzgthxq-gxFXU/edit?tab=t.0"
+      },
+      {
+        "Freunde": [
+          {
+            "Aura Tabelle": "https://docs.google.com/spreadsheets/d/1fPq0zo6FtX8MZhFoA0Q3-xTuKEhsvPJNXtxsPuYn5Wk/edit?hl=de&gid=0#gid=0"
+          },
+          {
+            "Nitrado": "https://oauth.nitrado.net/oauth/v2/auth?locale=deu&scope=user_info+user_edit+service+service_order+ssh_keys+rootserver+long_life_token&redirect_uri=https%3A%2F%2Fserver.nitrado.net%2Foauth%2Flogin_embedded&client_id=111_sKky5xgkTMhKzfLBWV5avSKL6NjmlISEi22dp8o9KvJaBlCn7x&response_type=code&state=6Weqnl59TkvvfOxS3K7jFDr9x5eEERhB"
+          }
+        ]
+      },
+      { "Privat": [{ "ToDo": "https://app.todoist.com/app/today" }] }
+    ],
+    "display": "modal",
+    "title": "Privat"
+  },
+  "hbrs": {
+    "links": [
+      {
+        "LEA": [
+          {
+            "Dashboard": "https://lea.hochschule-bonn-rhein-sieg.de/ilias.php?baseClass=ilDashboardGUI&cmd=jumpToSelectedItems"
+          },
+          {
+            "IT-Controlling": "https://lea.hochschule-bonn-rhein-sieg.de/ilias.php?ref_id=1632102&cmdClass=ilrepositorygui&cmdNode=y1&baseClass=ilrepositorygui"
+          }
+        ]
+      },
+      {
+        "Apollo": "https://apollo.h-brs.de/qisserver/pages/cs/sys/portal/hisinoneStartPage.faces"
+      },
+      {
+        "Prüfungsordnung Informatik": "https://www.h-brs.de/de/studien-pruefungs-fachbereichsordnungen-informatik"
+      },
+      {
+        "Kursbelegung": "https://eva.inf.h-brs.de/zope/lv/student/zulassung/index_html"
+      }
+    ],
+    "display": "modal",
+    "title": "Hbrs"
+  },
+  "linked": {
+    "links": "https://www.linkedin.com/feed/",
+    "display": "direkt"
+  },
+  "disney": {
+    "links": "https://www.disneyplus.com/home",
+    "display": "direkt"
+  },
+  "springer": {
+    "links": "https://www.google.com/search?q=", 
+    "display": "search"
+  },
+  "google": {
+    "links": "https://www.google.com/search?q=",
+    "display": "search"
+  },
+  "scholar": {
+    "links": "https://scholar.google.de/scholar?hl=de&as_sdt=0%2C5&q=",
+    "display": "search"
+  }
 }

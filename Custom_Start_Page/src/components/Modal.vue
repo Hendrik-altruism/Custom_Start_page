@@ -28,7 +28,6 @@ let toggle = (link) => {
   }else{
     element.classList.add("open")
   }
-  console.log(element)
 }
 </script>
 

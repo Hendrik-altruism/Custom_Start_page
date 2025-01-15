@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import Header from './components/Header.vue'
-import DolphinMirrorIcon from './components/icons/IconDolphinMirror.vue'
+import DirkIcon from './components/icons/IconDirk.vue'
 
 import { openDB } from './assets/indexedDB'
 
@@ -12,7 +12,7 @@ window.onload = openDB();
   
   <header>
     <div class="wrapper">
-      <DolphinMirrorIcon />    
+      <DirkIcon />    
       <Header msg="" />
     </div>
     <nav>

@@ -60,10 +60,11 @@ npm run lint
 TODO:
 
 - fix tab
-- viewport background height -> document.body.style.overflow = "hidden"
+- Database with changes to json and credentials and versions
 
 maybe: 
 
+- counter to searches -> change order
 - add links
 - style scrollbar
 - custom link styles or icons
