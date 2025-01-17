@@ -1,0 +1,1 @@
+import{_ as c,o as s,c as t,a as n,b as o,Y as r}from"./index-CU-fZKsr.js";const u={class:"box"},d={__name:"YouTube",setup(a){return(_,e)=>(s(),t("div",u,[e[0]||(e[0]=n("h1",{class:"green"},"Youtube",-1)),o(r)]))}},p=c(d,[["__scopeId","data-v-ad0d1ded"]]),i={class:"settings"},m={__name:"SettingsView",setup(a){return(_,e)=>(s(),t("div",i,[o(p)]))}};export{m as default};
