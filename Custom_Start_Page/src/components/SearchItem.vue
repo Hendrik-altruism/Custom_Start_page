@@ -35,8 +35,8 @@ let updateSearches = async () => {
   const searches = await loadSearches(props.searchbarType);
   const resultsMatch = searches.filter((element) => element.query.trim().startsWith(textInput.value.value.trim()));
   const resultsHistory = searches.filter((element) => element.query.toLowerCase().trim().includes(textInput.value.value.toLowerCase().trim()));
-  if((resultsMatch.length>0)&&(textInput.value.value.length>0)){suggInput.value.value=resultsMatch[resultsMatch.length-1].query;
-    console.log(suggInput.value.value)
+  if((resultsMatch.length>0)&&(textInput.value.value.length>0)){
+    suggInput.value.value=resultsMatch[resultsMatch.length-1].query;
   }else{
     suggInput.value.value = "";
   }
@@ -44,6 +44,7 @@ let updateSearches = async () => {
 }
 
 let tabSearch = () => {
+  console.log("test")
   textInput.value.value = suggInput.value.value;
   search();
 }
@@ -94,7 +95,7 @@ let changeInput = (item) => {
     <div class="search-container">
       <div class="input-container">
         <input type="text" ref="textInput" placeholder="Suche..." class="searchbar-element search-string" @focusin="updateSearches" @focusout="(event) => focusOut(event)" @keyup.ctrl.enter="tabSearch" @keyup.enter="search" @keyup.escape="focusOut" @input="updateSearches" @keyup.up="changeSelect(-1)" @keyup.down="changeSelect(1)">
-        <input ref="suggInput" class="searchbar-paragraph"></input>
+        <input ref="suggInput" class="searchbar-paragraph" disabled></input>
         <SearchIcon />
       </div>
       <div class="searches">

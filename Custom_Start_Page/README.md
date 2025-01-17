@@ -59,11 +59,11 @@ npm run lint
 
 TODO:
 
-- fix tab
-- Database with changes to json and credentials and versions
 
 maybe: 
 
+- Database with changes to json and credentials and versions
+- fix tab
 - counter to searches -> change order
 - add links
 - style scrollbar
