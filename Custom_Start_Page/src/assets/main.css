@@ -9,8 +9,7 @@ a,
 .green {
   text-decoration: none;
   color: var(--color-accent-text);
-  transition: 0.4s;
-  padding: 3px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 ::-webkit-scrollbar {

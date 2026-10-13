@@ -2,17 +2,20 @@
 import { ref } from 'vue';
 
 import ChevronIcon from './icons/IconChevronRight.vue';
+import CloseIcon from './icons/IconClose.vue';
 
-const props = defineProps({
+defineProps({
   content: {
     required: true,
   },
 });
 
+defineEmits(['close']);
+
 const linkRefs = ref({});
 
 let search = (url) => {
-  window.open(url, "_self");
+  window.location.href = url;
 }
 
 const setLinkRef = (index) => (el) => {
@@ -32,9 +35,12 @@ let toggle = (link) => {
 </script>
 
 <template>
-    <div class="modal-container">
+    <div class="modal-container" role="dialog" :aria-label="content.title">
       <div class="title">
         {{ content.title }}
+        <button type="button" class="close-button" title="Schließen" @click="$emit('close')">
+          <CloseIcon />
+        </button>
       </div>
       <div class="links">
         <div v-for="(item, index) in content.links" :key="index">
@@ -63,26 +69,55 @@ let toggle = (link) => {
 <style scoped>
 
 .modal-container{
-  min-width: 30vw;
+  width: min(92vw, 34rem);
   background-color: var(--color-modal-bg);
   z-index: 100;
   position: fixed;
-  top: 35%; 
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%); 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-  border-radius: 30px;
-  max-height: 60vh; 
-  overflow: auto;  
-  padding-bottom: 20px; 
+  transform: translate(-50%, -50%);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  max-height: 70vh;
+  overflow: auto;
+  padding-bottom: 16px;
+  animation: pop 0.2s ease-out;
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: translate(-50%, -46%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
 }
 
 .title{
+  position: sticky;
+  top: 0;
   display: flex;
   justify-content: center;
-  padding: 10px;
+  align-items: center;
+  padding: 14px 56px 10px;
   font-weight: 500;
-  font-size: 2rem;
+  font-size: 1.8rem;
+  color: var(--color-heading);
+  background-color: var(--color-modal-bg);
+}
+
+.close-button{
+  position: absolute;
+  right: 18px;
+  display: flex;
+  padding: 6px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.close-button:hover{
+  background-color: var(--color-hover-text);
+  color: var(--color-heading);
 }
 
 .links{
@@ -90,19 +125,22 @@ let toggle = (link) => {
 }
 
 .front-search{
-  padding: 5px 30px;
+  padding: 7px 30px;
+  border-left: 3px solid transparent;
+  transition: background-color 0.15s ease;
 }
 
 .front-search:hover {
   cursor: pointer;
   background-color: var(--color-hover-text);
-  border-left: 3px solid var(--color-border);
+  border-left-color: var(--color-accent-text);
 }
 
 .sublink{
   display: flex;
   justify-content: space-between;
-  padding: 5px 30px;
+  align-items: center;
+  padding: 7px 30px;
   cursor: pointer;
   font-weight: 600;
 }

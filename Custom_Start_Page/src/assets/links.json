@@ -232,7 +232,7 @@
     "display": "direkt"
   },
   "springer": {
-    "links": "https://www.google.com/search?q=", 
+    "links": "https://link.springer.com/search?query=",
     "display": "search"
   },
   "google": {

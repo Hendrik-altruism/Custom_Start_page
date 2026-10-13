@@ -1,6 +1,5 @@
 <script setup>
-import { ref } from 'vue';
-import { nextTick } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 
 import YouTubeIcon from './icons/IconYouTube.vue'
 import TelekomIcon from './icons/IconTelekom.vue'
@@ -35,183 +34,134 @@ import urls from '../assets/links.json';
 import Modal from './Modal.vue'
 import SearchItem from './SearchItem.vue'
 
+// Grid order. `key` refers to an entry in links.json; tiles without a key are decorative,
+// `null` is an empty cell. Tiles with `search: true` are replaced by the searchbar while it is open.
+const tiles = [
+  { key: 'youtube', icon: YouTubeIcon, label: 'YouTube' },
+  { key: 'whatsapp', icon: WhatsAppIcon, label: 'WhatsApp' },
+  { key: 'instagram', icon: InstagramIcon, label: 'Instagram' },
+  { key: 'linked', icon: LinkedIcon, label: 'LinkedIn' },
+  { key: 'calendar', icon: CalendarIcon, label: 'Kalender' },
+
+  { key: 'primevideo', icon: PrimeVideoIcon, label: 'Prime Video' },
+  { key: 'springer', icon: SpringerIcon, label: 'Springer', search: true },
+  { key: 'google', icon: GoogleIcon, label: 'Google', search: true },
+  { key: 'scholar', icon: ScholarIcon, label: 'Google Scholar', search: true },
+  { key: 'job', icon: JobIcon, label: 'Jobs' },
+
+  { key: 'netflix', icon: NetflixIcon, label: 'Netflix' },
+  { key: 'github', icon: GitHubIcon, label: 'GitHub' },
+  { icon: ConetIcon, label: 'Conet' },
+  { key: 'chatgpt', icon: GPTIcon, label: 'ChatGPT' },
+  { key: 'wohnungen', icon: WohnungenIcon, label: 'Wohnungen' },
+
+  { key: 'disney', icon: DisneyIcon, label: 'Disney+' },
+  { key: 'freunde', icon: BeerwatchIcon, label: 'Privat' },
+  { key: 'hbrs', icon: HbrsIcon, label: 'H-BRS' },
+  { key: 'amazon', icon: AmazonIcon, label: 'Amazon' },
+  { key: 'mail', icon: MailIcon, label: 'Mail' },
+
+  { key: 'twitch', icon: TwitchIcon, label: 'Twitch' },
+  { key: 'sparkasse', icon: SparkasseIcon, label: 'Sparkasse' },
+  { key: 'ing', icon: INGIcon, label: 'ING' },
+  { key: 'trade', icon: TradeRepublicIcon, label: 'Trade Republic' },
+  { key: 'travel', icon: TravelIcon, label: 'Reisen' },
+
+  { icon: TelekomIcon, label: 'Telekom' },
+  { key: 'asos', icon: AsosIcon, label: 'ASOS' },
+  null,
+  null,
+  { key: 'calculator', icon: CalculatorIcon, label: 'Rechner' },
+];
 
 const showModal = ref(false);
 const modalContent = ref(null);
 
-const showSearch = ref(false);
-const searchbarType = ref("");
-const searchbarUrl = ref("");
-const searchbarObject = ref(null);
+const searchbarType = ref('');
+const showSearch = computed(() => searchbarType.value !== '');
+const firstSearchIndex = tiles.findIndex((tile) => tile?.search);
 
-
-let exec = async (key) => {
-  if(urls[key].display == "modal"){
-    modalContent.value = urls[key];
+let exec = (key) => {
+  const entry = urls[key];
+  if (!entry) return;
+  if (entry.display === 'modal') {
+    modalContent.value = entry;
     showModal.value = true;
-    document.body.style.overflow = "hidden";
-  }else if (urls[key].display == "search"){
-    showSearch.value = true;
+    document.body.style.overflow = 'hidden';
+  } else if (entry.display === 'search') {
     searchbarType.value = key;
-    searchbarUrl.value = urls[key].links;
-    nextTick(() => {
-      const inputElement = searchbarObject.value.querySelector(".search-string");
-      if (inputElement) {
-        inputElement.focus();
-      }
-    });
-  }else{
-    window.open(urls[key].links, "_self");
+  } else {
+    window.location.href = entry.links;
   }
-}
+};
 
 let handleEscape = () => {
   showModal.value = false;
-  showSearch.value = false;
-  document.body.style.overflow = "visible";
-}
+  searchbarType.value = '';
+  document.body.style.overflow = '';
+};
+
+let onKeydown = (event) => {
+  // The searchbar input handles Escape itself (clear first, then close) and prevents the default.
+  // This catches Escape when focus has left the input, e.g. after tabbing out of it.
+  if (event.key === 'Escape' && !event.defaultPrevented && (showModal.value || showSearch.value)) handleEscape();
+};
+
+onMounted(() => window.addEventListener('keydown', onKeydown));
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', onKeydown);
+  document.body.style.overflow = '';
+});
 </script>
 
 <template>
   <div class="desktop-container">
-    <div class="iconelement">
-      <YouTubeIcon @click="exec('youtube')"/>
-    </div>
+    <template v-for="(tile, index) in tiles" :key="index">
+      <div v-if="showSearch && index === firstSearchIndex" class="iconelement searchbar">
+        <SearchItem
+          :key="searchbarType"
+          :searchbarType="searchbarType"
+          :searchbarUrl="urls[searchbarType].links"
+          @close="handleEscape"
+        />
+      </div>
 
-    <div class="iconelement">
-      <WhatsAppIcon @click="exec('whatsapp')"/>
-    </div>
+      <div v-if="!tile" class="iconelement"></div>
+      <div v-else-if="!(showSearch && tile.search)" class="iconelement">
+        <button
+          v-if="tile.key"
+          type="button"
+          class="tile"
+          :title="tile.label"
+          :aria-label="tile.label"
+          @click="exec(tile.key)"
+        >
+          <component :is="tile.icon" />
+        </button>
+        <div v-else class="tile tile-static" :title="tile.label">
+          <component :is="tile.icon" />
+        </div>
+      </div>
+    </template>
 
-    <div class="iconelement">
-      <InstagramIcon @click="exec('instagram')"/>
-    </div>
+    <Transition name="fade">
+      <div v-if="showModal || showSearch" id="desktop-bg" @click="handleEscape"></div>
+    </Transition>
 
-    <div class="iconelement">
-      <LinkedIcon  @click="exec('linked')"/>
-    </div>
-
-    <div class="iconelement">
-      <CalendarIcon @click="exec('calendar')"/>
-    </div>
-
-    <div class="iconelement">
-      <PrimeVideoIcon @click="exec('primevideo')"/>
-    </div>
-
-    <div v-show="!showSearch" class="iconelement searchsvg">
-      <SpringerIcon @click="exec('springer')"/>
-    </div>
-
-    <div v-show="!showSearch" class="iconelement searchsvg">
-      <GoogleIcon @click="exec('google')"/>
-    </div>
-
-    <div v-show="!showSearch" class="iconelement searchsvg">
-      <ScholarIcon @click="exec('scholar')"/>
-    </div>
-
-    <div v-show="showSearch" ref="searchbarObject" class="iconelement searchbar">
-      <SearchItem :searchbarType="searchbarType" :searchbarUrl="searchbarUrl"/>
-    </div> 
-
-    <div class="iconelement">
-      <JobIcon @click="exec('job')"/>
-    </div>
-
-    <div class="iconelement">
-      <NetflixIcon @click="exec('netflix')"/>
-    </div>
-
-    <div class="iconelement">
-      <GitHubIcon @click="exec('github')"/>
-    </div>
-
-    <div class="iconelement">
-      <ConetIcon />
-    </div>
-
-    <div class="iconelement">
-      <GPTIcon @click="exec('chatgpt')"/>
-    </div>
-
-    <div class="iconelement">
-      <WohnungenIcon @click="exec('wohnungen')"/>
-    </div>
-
-    <div class="iconelement">
-      <DisneyIcon @click="exec('disney')"/>
-    </div>
-
-    <div class="iconelement">
-      <BeerwatchIcon @click="exec('freunde')"/>
-    </div>
-
-    <div class="iconelement">
-      <HbrsIcon @click="exec('hbrs')"/>
-    </div>
-
-    <div class="iconelement">
-      <AmazonIcon @click="exec('amazon')"/>
-    </div>
-
-    <div class="iconelement">
-      <MailIcon @click="exec('mail')"/>
-    </div>
-
-    <div class="iconelement">
-      <TwitchIcon @click="exec('twitch')"/>
-    </div>
-
-    <div class="iconelement">
-      <SparkasseIcon @click="exec('sparkasse')"/>
-    </div>
-
-    <div class="iconelement">
-      <INGIcon @click="exec('ing')"/>
-    </div>
-
-    <div class="iconelement">
-      <TradeRepublicIcon @click="exec('trade')"/>
-    </div>
-
-    <div class="iconelement">
-      <TravelIcon  @click="exec('travel')"/>
-    </div>
-
-    <div class="iconelement">
-      <TelekomIcon />
-    </div>
-
-    <div class="iconelement">
-      <AsosIcon @click="exec('asos')"/>
-    </div>
-
-    <div class="iconelement">
-      
-    </div>
-
-    <div class="iconelement">
-      
-    </div>
-
-    <div class="iconelement">
-      <CalculatorIcon @click="exec('calculator')"/>
-    </div>
-
-    <Modal v-if="showModal" :content="modalContent"/>
-
-    <div v-if="showModal||showSearch" id="desktop-bg" @click="handleEscape()"></div>
+    <Modal v-if="showModal" :content="modalContent" @close="handleEscape" />
   </div>
 </template>
 
 <style scoped>
-.desktop-container{
+.desktop-container {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  overflow: hidden;
+  grid-template-columns: repeat(5, 1fr);
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 2rem 3rem;
 }
 
-.iconelement{
+.iconelement {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -219,39 +169,89 @@ let handleEscape = () => {
   color: var(--color-text);
 }
 
-.iconelement svg{
-  filter: invert(71%) sepia(3%) saturate(10%) hue-rotate(7deg) brightness(88%) contrast(95%);
-  scale: 1;
-  transition-property: scale;
-  transition-duration: .5s;
+.tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.25rem;
+  border: none;
+  border-radius: 28px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.searchbar{
-  grid-column: span 3;
+.tile-static {
+  cursor: default;
+}
+
+.tile :deep(svg) {
+  filter: invert(71%) sepia(3%) saturate(10%) hue-rotate(7deg) brightness(88%) contrast(95%);
+  transition: filter 0.3s ease, scale 0.3s ease;
+}
+
+.tile:focus-visible {
+  outline: 2px solid var(--color-accent-text);
+  outline-offset: 2px;
 }
 
 @media (hover: hover) {
-  .iconelement svg:hover{
-    /* Change */
-    /* filter: invert(47%) sepia(65%) saturate(302%) hue-rotate(127deg) brightness(97%) contrast(95%); */
+  button.tile:hover {
+    background-color: var(--color-hover-text);
+  }
+
+  button.tile:hover :deep(svg) {
     filter: none;
-    cursor: pointer;
-    scale: 1.15;
+    scale: 1.1;
   }
 }
 
-.iconelement svg:active{
-  cursor: pointer;
-  scale: 1;
+button.tile:focus-visible :deep(svg) {
+  filter: none;
 }
 
-#desktop-bg{
-  position: absolute;
-  top: var(--header-height);
-  left: 0;
-  width: 100%;
-  height: calc(100vmax - var(--header-height));
+button.tile:active :deep(svg) {
+  scale: 0.97;
+}
+
+.searchbar {
+  grid-column: span 3;
+  position: relative;
+  z-index: 60;
+}
+
+#desktop-bg {
+  position: fixed;
+  inset: 0;
   z-index: 50;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+@media (max-width: 900px) {
+  .desktop-container {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 1rem;
+  }
+
+  .iconelement {
+    height: 9em;
+  }
+
+  .tile :deep(svg) {
+    max-width: 70px;
+    max-height: 70px;
+  }
 }
 </style>

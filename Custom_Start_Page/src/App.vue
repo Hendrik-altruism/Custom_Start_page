@@ -5,7 +5,7 @@ import DirkIcon from './components/icons/IconDirk.vue'
 
 import { openDB } from './assets/indexedDB'
 
-window.onload = openDB();
+openDB().catch((error) => console.error('Datenbank konnte nicht geöffnet werden:', error));
 </script>
 
 <template>
@@ -27,17 +27,15 @@ window.onload = openDB();
 
 <style scoped>
 header {
-    display: flex;
-    place-items: center;
-    justify-content: space-between;
-    background-color: var(--color-header-bg);
-    padding: 30px;  
-    height: var(--header-height);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background-color: var(--color-header-bg);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0 2.5rem;
+  height: var(--header-height);
+}
 
 header .wrapper{
   display: flex;
@@ -45,20 +43,34 @@ header .wrapper{
   gap: 3em;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+nav {
+  display: flex;
+  gap: 0.25rem;
+  padding: 4px;
+  border-radius: 999px;
+  background-color: var(--color-hover-text);
 }
 
 nav a {
   display: inline-block;
-  border-left: 1px solid var(--color-border);
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-weight: 500;
 }
 
-nav a:first-of-type {
-  border: 0;
+nav a.router-link-exact-active {
+  color: var(--color-heading);
+  background-color: var(--color-accent2);
+}
+
+@media (max-width: 700px) {
+  header {
+    padding: 0 1rem;
+  }
+
+  nav a {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
 }
 </style>

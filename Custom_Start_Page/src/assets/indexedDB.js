@@ -1,155 +1,123 @@
-let db;
 const dbName = "SearchDB";
 const storeNames = ["springer", "google", "scholar"];
 const storeLimit = 5000;
 
-export async function openDB() {
+let dbPromise = null;
+
+// Trims and collapses repeated whitespace, so "  foo   bar " becomes "foo bar".
+export function normalizeQuery(query) {
+  return String(query ?? "").trim().replace(/\s+/g, " ");
+}
+
+// Older versions stored URL-encoded queries ("foo%20bar"); decode them for display.
+function decodeLegacy(query) {
+  if (!/%[0-9a-f]{2}/i.test(query)) return query;
+  try {
+    return decodeURIComponent(query);
+  } catch {
+    return query;
+  }
+}
+
+function requestToPromise(request) {
   return new Promise((resolve, reject) => {
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+function transactionDone(transaction) {
+  return new Promise((resolve, reject) => {
+    transaction.oncomplete = () => resolve();
+    transaction.onerror = () => reject(transaction.error);
+    transaction.onabort = () => reject(transaction.error);
+  });
+}
+
+export function openDB() {
+  if (dbPromise) return dbPromise;
+
+  dbPromise = new Promise((resolve, reject) => {
     const request = indexedDB.open(dbName, 1);
 
-    request.onupgradeneeded = function (event) {
-      db = event.target.result;
-
-      storeNames.forEach((element) => {
-        if (!db.objectStoreNames.contains(element)) {
-          db.createObjectStore(element, { keyPath: "id", autoIncrement: true });
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      storeNames.forEach((name) => {
+        if (!db.objectStoreNames.contains(name)) {
+          db.createObjectStore(name, { keyPath: "id", autoIncrement: true });
         }
       });
     };
 
-    request.onsuccess = function (event) {
-      db = event.target.result;
-      resolve;
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => {
+      dbPromise = null;
+      reject(request.error);
     };
-
-    request.onerror = reject;
   });
+
+  return dbPromise;
 }
 
-function checkCount(storeName) {
-  return new Promise((resolve, reject) => {
-    const transaction = db.transaction([storeName], "readwrite");
-    const store = transaction.objectStore(storeName);
+export async function loadSearches(storeName) {
+  const db = await openDB();
+  const store = db.transaction(storeName, "readonly").objectStore(storeName);
+  const entries = await requestToPromise(store.getAll());
 
-    const countRequest = store.count();
-
-    countRequest.onsuccess = function () {
-      const count = countRequest.result;
-
-      if (count >= storeLimit) {
-        const getAllKeysRequest = store.getAllKeys();
-
-        getAllKeysRequest.onsuccess = () => {
-          const keys = getAllKeysRequest.result;
-
-          if (keys.length > 0) {
-            store.delete(keys[0]).onsuccess = () => {
-              console.log(`Eintrag mit Schlüssel ${keys[0]} gelöscht.`);
-            };
-          }
-        };
-      } else {
-        resolve;
-      }
-    };
-    countRequest.onerror = reject;
-  });
+  // Oldest first (insertion order), queries normalized and deduplicated (newest wins).
+  const seen = new Map();
+  for (const entry of entries) {
+    const query = normalizeQuery(decodeLegacy(entry.query));
+    if (!query) continue;
+    seen.delete(query.toLowerCase());
+    seen.set(query.toLowerCase(), { ...entry, query });
+  }
+  return [...seen.values()];
 }
 
 export async function deleteByQuery(query, storeName) {
-  return new Promise((resolve, reject) => {
-    const request = indexedDB.open(dbName);
+  const target = normalizeQuery(query).toLowerCase();
+  const db = await openDB();
+  const transaction = db.transaction(storeName, "readwrite");
+  const store = transaction.objectStore(storeName);
+  let deletedCount = 0;
 
-    request.onsuccess = (event) => {
-      const db = event.target.result;
-      const transaction = db.transaction(storeName, "readwrite");
-      const store = transaction.objectStore(storeName);
+  const cursorRequest = store.openCursor();
+  cursorRequest.onsuccess = () => {
+    const cursor = cursorRequest.result;
+    if (!cursor) return;
+    if (normalizeQuery(decodeLegacy(cursor.value.query)).toLowerCase() === target) {
+      cursor.delete();
+      deletedCount++;
+    }
+    cursor.continue();
+  };
 
-      const cursorRequest = store.openCursor();
-      let deletedCount = 0;
-
-      cursorRequest.onsuccess = (event) => {
-        const cursor = event.target.result;
-
-        if (cursor) {
-          if (
-            cursor.value.query.toLowerCase().trim() ===
-            query.toLowerCase().trim()
-          ) {
-            cursor.delete();
-            deletedCount++;
-          }
-          cursor.continue();
-        } else {
-          resolve(deletedCount);
-        }
-      };
-
-      cursorRequest.onerror = (event) => {
-        console.error(
-          "Fehler beim Durchsuchen mit Cursor:",
-          event.target.error
-        );
-        reject(event.target.error);
-      };
-    };
-
-    request.onerror = (event) => {
-      console.error("Datenbank-Fehler:", event.target.error);
-      reject(event.target.error);
-    };
-  });
+  await transactionDone(transaction);
+  return deletedCount;
 }
 
-export async function saveSearch(searchInput, storeName) {
-  await deleteByQuery(searchInput, storeName);
+export async function saveSearch(query, storeName) {
+  const normalized = normalizeQuery(query);
+  if (!normalized) return;
 
-  const transaction = db.transaction([storeName], "readwrite");
+  await deleteByQuery(normalized, storeName);
+
+  const db = await openDB();
+  const transaction = db.transaction(storeName, "readwrite");
   const store = transaction.objectStore(storeName);
 
-  const searchEntry = {
-    query: searchInput.trim(),
-    date: new Date().toISOString(),
+  store.add({ query: normalized, date: new Date().toISOString() });
+
+  const keysRequest = store.getAllKeys();
+  keysRequest.onsuccess = () => {
+    const keys = keysRequest.result;
+    const overflow = keys.length - storeLimit;
+    for (let i = 0; i < overflow; i++) {
+      store.delete(keys[i]);
+    }
   };
 
-  const request = store.add(searchEntry);
-
-  checkCount(storeName);
-
-  request.onsuccess = function () {
-    console.log("Suchanfrage erfolgreich gespeichert:", searchEntry);
-  };
-
-  request.onerror = function (event) {
-    console.error("Fehler beim Speichern der Suchanfrage:", event.target.error);
-  };
-}
-
-export function loadSearches(storeName) {
-  return new Promise((resolve, reject) => {
-    const transaction = db.transaction([storeName], "readonly");
-    const store = transaction.objectStore(storeName);
-
-    const request = store.openCursor();
-    const resultArray = []; 
-
-    request.onsuccess = function (event) {
-      const cursor = event.target.result;
-
-      if (cursor) {
-        resultArray.push(cursor.value); 
-        cursor.continue(); 
-      } else {
-        resolve(resultArray);
-      }
-    };
-
-    request.onerror = function (event) {
-      console.error(
-        "Fehler beim Laden der Daten aus dem Store:",
-        event.target.error
-      );
-      reject(event.target.error);
-    };
-  });
+  // Resolve only once the write is committed, so navigating away can't drop it.
+  await transactionDone(transaction);
 }
